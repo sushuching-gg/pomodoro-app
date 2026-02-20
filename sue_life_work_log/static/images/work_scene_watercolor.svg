@@ -1,0 +1,37 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="watercolor">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.4" />
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.9 0" />
+    </filter>
+  </defs>
+
+  <!-- Background Wall Wash -->
+  <rect width="400" height="200" fill="#f0f8ff" opacity="0.5" filter="url(#watercolor)"/>
+
+  <!-- Desk Surface -->
+  <rect y="200" width="400" height="100" fill="#dab88b" opacity="0.8" filter="url(#watercolor)"/>
+
+  <!-- Laptop Open -->
+  <path d="M80 150 L220 150 L220 230 L80 230 Z" fill="#2c3e50" filter="url(#watercolor)"/> <!-- Screen Back -->
+  <path d="M90 160 L210 160 L210 220 L90 220 Z" fill="#87CEEB" opacity="0.7" filter="url(#watercolor)"/> <!-- Screen Blue -->
+  <path d="M60 230 L240 230 L250 240 L50 240 Z" fill="#7f8c8d" filter="url(#watercolor)"/> <!-- Keyboard Base -->
+
+  <!-- Stack of Books -->
+  <rect x="260" y="210" width="80" height="15" fill="#e74c3c" filter="url(#watercolor)"/>
+  <rect x="265" y="195" width="70" height="15" fill="#3498db" filter="url(#watercolor)"/>
+  <rect x="270" y="180" width="60" height="15" fill="#2ecc71" filter="url(#watercolor)"/>
+
+  <!-- Coffee Mug -->
+  <path d="M30 220 Q30 250 60 250 Q90 250 90 220 Z" fill="#ecf0f1" filter="url(#watercolor)"/>
+  <path d="M30 220 L90 220" stroke="#bdc3c7" stroke-width="2" />
+  <path d="M90 230 Q100 230 100 240 Q100 250 90 250" fill="none" stroke="#ecf0f1" stroke-width="3" filter="url(#watercolor)"/>
+
+  <!-- Plant -->
+  <path d="M350 200 Q330 150 360 140" fill="none" stroke="#27ae60" stroke-width="8" filter="url(#watercolor)"/>
+  <path d="M350 200 Q380 160 390 180" fill="none" stroke="#2ecc71" stroke-width="8" filter="url(#watercolor)"/>
+  <rect x="340" y="200" width="30" height="30" fill="#e67e22" filter="url(#watercolor)"/>
+
+</svg>

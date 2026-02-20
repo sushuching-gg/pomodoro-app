@@ -1,0 +1,16 @@
+theme:
+  name: "Professional Minimalist"
+  colors:
+    background: "#FFFFFF"
+    text: "#000000"
+    accent: "#333333"
+  typography:
+    heading:
+      font: "Arial Black" # Fallback since we can't guarantee Helvetica
+      size: 44
+    body:
+      font: "Calibri Light"
+      size: 24
+  layout:
+    navigation: true # Adds "01. TITLE" to top left
+    grid: true       # (Concept for future enhancement)

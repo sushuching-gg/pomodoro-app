@@ -1,0 +1,32 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="watercolor">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Background Wash -->
+  <rect width="400" height="300" fill="#fff5ee" opacity="0.6" filter="url(#watercolor)"/>
+
+  <!-- Suitcase -->
+  <rect x="50" y="80" width="200" height="150" rx="10" fill="#8B4513" filter="url(#watercolor)"/> <!-- Leather Brown -->
+  <rect x="50" y="80" width="200" height="150" rx="10" stroke="#5D4037" stroke-width="3" fill="none" filter="url(#watercolor)"/>
+  <rect x="70" y="80" width="20" height="150" fill="#A0522D" opacity="0.5" filter="url(#watercolor)"/>
+  <rect x="210" y="80" width="20" height="150" fill="#A0522D" opacity="0.5" filter="url(#watercolor)"/>
+  <path d="M120 80 V60 Q150 40 180 60 V80" fill="none" stroke="#5D4037" stroke-width="8" filter="url(#watercolor)"/> <!-- Handle -->
+
+  <!-- Camera hanging off side -->
+  <rect x="280" y="160" width="100" height="70" rx="5" fill="#2c3e50" filter="url(#watercolor)"/>
+  <circle cx="330" cy="195" r="25" fill="#95a5a6" stroke="#fff" stroke-width="2" filter="url(#watercolor)"/>
+  <rect x="300" y="150" width="30" height="10" fill="#2c3e50" filter="url(#watercolor)"/>
+
+  <!-- Map behind -->
+  <path d="M250 50 L380 20 L390 140 L260 170 Z" fill="#f1c40f" opacity="0.4" filter="url(#watercolor)"/>
+  
+  <!-- Polaroid -->
+  <rect x="20" y="200" width="80" height="90" fill="#fff" transform="rotate(-10 60 245)" filter="url(#watercolor)"/>
+  <rect x="30" y="210" width="60" height="60" fill="#333" transform="rotate(-10 60 245)" opacity="0.8" filter="url(#watercolor)"/>
+
+</svg>

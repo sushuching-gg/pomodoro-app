@@ -1,0 +1,49 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<div class="entry-header">
+    <h1 class="entry-title">上傳與建立日誌 (New Entry)</h1>
+    <p>建立各類別的新日誌，支援圖片、影片或純文字。</p>
+</div>
+
+<div class="entry-content">
+    <form method="POST" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
+        
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">選擇檔案 (Select File - Optional for Text Only):</label>
+            <input type="file" name="file" accept="video/*,audio/*,image/*" 
+                   style="width: 100%; padding: 10px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text);">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">標題 (Title):</label>
+            <input type="text" name="title" placeholder="例如：京都之旅 Vlog" required
+                   style="width: 100%; padding: 10px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text);">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">分類 (Category):</label>
+            <select name="category" style="width: 100%; padding: 10px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text);">
+                <option value="work">工作日誌 (Work)</option>
+                <option value="life_daily_me">我的生活 (My Daily)</option>
+                <option value="life_daily_grandma">阿嬤的生活 (Grandma's Daily)</option>
+                <option value="life_travel">旅遊 (Travel)</option>
+                <option value="videos">影片專案 (Videos)</option>
+                <option value="podcasts">Podcast</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">描述 (Description - Optional):</label>
+            <textarea name="description" rows="4" placeholder="請輸入內容..." 
+                      style="width: 100%; padding: 10px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text);"></textarea>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <button type="submit" class="btn">建立 (Create)</button>
+            <a href="/admin" class="btn" style="background-color: transparent; border: 1px solid var(--border); color: var(--text-main) !important;">取消</a>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

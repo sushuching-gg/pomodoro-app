@@ -1,0 +1,22 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="watercolor-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Purple Wash -->
+  <circle cx="100" cy="100" r="85" fill="#e6e6fa" opacity="0.6" filter="url(#watercolor-filter)" />
+
+  <!-- Clapperboard -->
+  <rect x="40" y="100" width="80" height="60" fill="#2b2b2b" filter="url(#watercolor-filter)" />
+  <path d="M40 100 L120 100 L120 80 L40 80 Z" fill="#2b2b2b" transform="rotate(-15 40 100)" filter="url(#watercolor-filter)" />
+  <path d="M45 78 L60 93 M65 73 L80 88 M85 68 L100 83" stroke="#fff" stroke-width="3" transform="rotate(-15 40 100)" filter="url(#watercolor-filter)" />
+
+  <!-- Film Reel -->
+  <circle cx="140" cy="80" r="35" fill="#444" opacity="0.9" filter="url(#watercolor-filter)" />
+  <circle cx="140" cy="80" r="10" fill="#ddd" filter="url(#watercolor-filter)" />
+  <circle cx="140" cy="80" r="30" stroke="#ddd" stroke-width="2" stroke-dasharray="5,5" fill="none" filter="url(#watercolor-filter)" />
+</svg>

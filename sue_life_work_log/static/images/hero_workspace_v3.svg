@@ -1,0 +1,38 @@
+<svg width="800" height="400" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="watercolor-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="5" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="1.5" />
+    </filter>
+  </defs>
+
+  <!-- Large warm wash background -->
+  <rect width="800" height="400" fill="#fff5e6" />
+  <circle cx="200" cy="100" r="150" fill="#ffdab9" opacity="0.4" filter="url(#watercolor-filter)" />
+  <circle cx="600" cy="300" r="200" fill="#ffe4b5" opacity="0.4" filter="url(#watercolor-filter)" />
+
+  <!-- Window Area suggestion -->
+  <rect x="550" y="50" width="200" height="150" fill="#e0ffff" opacity="0.6" filter="url(#watercolor-filter)" />
+  <path d="M650 50 V200 M550 125 H750" stroke="#fff" stroke-width="8" filter="url(#watercolor-filter)" />
+
+  <!-- Desk Surface -->
+  <path d="M0 300 L800 300 L800 400 L0 400 Z" fill="#d2b48c" opacity="0.8" filter="url(#watercolor-filter)" />
+
+  <!-- Open Notebook -->
+  <rect x="150" y="320" width="120" height="60" fill="#f5f5dc" transform="rotate(-5 150 320)" filter="url(#watercolor-filter)" />
+  <line x1="210" y1="315" x2="210" y2="380" stroke="#ccc" stroke-width="2" transform="rotate(-5 150 320)" />
+
+  <!-- Coffee Cup -->
+  <circle cx="350" cy="340" r="25" fill="#fff" filter="url(#watercolor-filter)" />
+  <circle cx="350" cy="340" r="20" fill="#6F4E37" opacity="0.9" filter="url(#watercolor-filter)" />
+  <path d="M375 330 Q390 330 390 345 Q390 360 370 355" fill="none" stroke="#fff" stroke-width="3" filter="url(#watercolor-filter)" />
+
+  <!-- Pen -->
+  <rect x="280" y="350" width="60" height="5" fill="#333" transform="rotate(20 280 350)" filter="url(#watercolor-filter)" />
+  
+  <!-- Plant suggestion -->
+  <path d="M50 350 Q30 250 80 200" fill="none" stroke="#556B2F" stroke-width="15" opacity="0.7" filter="url(#watercolor-filter)" />
+  <path d="M50 350 Q80 260 120 220" fill="none" stroke="#6B8E23" stroke-width="15" opacity="0.7" filter="url(#watercolor-filter)" />
+
+</svg>

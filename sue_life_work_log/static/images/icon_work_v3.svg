@@ -1,0 +1,30 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="watercolor-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.8" />
+    </filter>
+  </defs>
+
+  <!-- Blue Wash Background -->
+  <circle cx="100" cy="110" r="85" fill="#e0f0ff" opacity="0.6" filter="url(#watercolor-filter)" />
+  
+  <!-- Desk Area base -->
+  <path d="M20 160 Q100 170 180 160 T190 180 T10 180 Z" fill="#8B5A2B" opacity="0.7" filter="url(#watercolor-filter)" />
+  
+  <!-- Laptop simple -->
+  <rect x="50" y="80" width="100" height="70" fill="#2F2F2F" rx="3" filter="url(#watercolor-filter)" />
+  <rect x="55" y="85" width="90" height="60" fill="#87CEEB" opacity="0.8" filter="url(#watercolor-filter)" />
+  <path d="M40 150 L160 150 L170 160 L30 160 Z" fill="#505050" filter="url(#watercolor-filter)" />
+  
+  <!-- Book Pile -->
+  <rect x="140" y="130" width="50" height="15" fill="#CD5C5C" rx="2" filter="url(#watercolor-filter)"/>
+  <rect x="145" y="115" width="40" height="15" fill="#4682B4" rx="2" filter="url(#watercolor-filter)"/>
+  <rect x="148" y="100" width="35" height="15" fill="#556B2F" rx="2" filter="url(#watercolor-filter)"/>
+  
+  <!-- Glasses -->
+  <circle cx="120" cy="165" r="10" stroke="#333" stroke-width="2" fill="none" filter="url(#watercolor-filter)"/>
+  <circle cx="150" cy="165" r="10" stroke="#333" stroke-width="2" fill="none" filter="url(#watercolor-filter)"/>
+  <line x1="130" y1="165" x2="140" y2="165" stroke="#333" stroke-width="2" />
+</svg>

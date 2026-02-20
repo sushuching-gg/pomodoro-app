@@ -1,0 +1,55 @@
+[
+    {
+        "name": "append_project_log",
+        "description": "將結構化的事件資料寫入專案總日誌。當用戶回報新的事件或狀況時，必須調用此工具。",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string",
+                    "description": "事件發生的時間，格式 HH:MM"
+                },
+                "location": {
+                    "type": "string",
+                    "description": "歸屬場域，例如：大安, 信義, 中山"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "完整的事件描述"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "待處理",
+                        "處理中",
+                        "已解決"
+                    ],
+                    "description": "事件目前的處理狀態"
+                },
+                "note": {
+                    "type": "string",
+                    "description": "AI 根據 Guardrails 生成的建議或 [待核准] 標註"
+                }
+            },
+            "required": [
+                "time",
+                "location",
+                "description",
+                "status"
+            ]
+        }
+    },
+    {
+        "name": "generate_weekly_report",
+        "description": "生成本週的專案摘要週報，包含足跡統計與紅字事件彙整。通常在每週五下午或用戶主動要求時調用。",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "report_date": {
+                    "type": "string",
+                    "description": "週報的日期，預設為當天"
+                }
+            }
+        }
+    }
+]

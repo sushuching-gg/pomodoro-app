@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title or "Sue's Life & Work Log" }}</title>
+    <!-- Google Fonts: Playfair Display (Serif for headers) & Lato (Sans for body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Palette: Warm & Elegant */
+            --bg-body: #f9f7f2;
+            /* Creamy white */
+            --bg-card: #ffffff;
+            /* Pure white */
+            --text-main: #333333;
+            /* Dark Charcoal */
+            --text-muted: #777777;
+            /* Medium Grey */
+            --accent: #a0522d;
+            /* Sienna / Terra Cotta - Warm earthy tone */
+            --accent-light: #e6dccd;
+            /* Light beige for hover backgrounds */
+            --nav-bg: #ffffff;
+            --border: #e0e0e0;
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Lato', sans-serif;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 8px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--nav-bg);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
+        .nav-logo:hover {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+            padding-bottom: 3px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        /* Main Content */
+        .content-wrapper {
+            margin-top: 50px;
+            margin-bottom: 80px;
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3 {
+            font-family: var(--font-display);
+            color: var(--text-main);
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        .see-all {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.8;
+        }
+
+        /* Entries / Cards */
+        .entry-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            /* Masonry-ish grid */
+            gap: 20px;
+        }
+
+        .entry-item {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: 4px;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid transparent;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .entry-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .entry-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .entry-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin: 0 0 15px 0;
+            line-height: 1.3;
+        }
+
+        .entry-title a {
+            color: var(--text-main);
+        }
+
+        .entry-title a:hover {
+            color: var(--accent);
+        }
+
+        .entry-summary {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+            /* Pushes content down if minimal */
+        }
+
+        /* Buttons & Forms */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--accent);
+            color: #fff !important;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: background-color 0.2s ease, transform 0.1s;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            background-color: #8b4513;
+            /* Darker Sienna */
+            transform: translateY(-1px);
+        }
+
+        /* Markdown Entry View */
+        .entry-content-view {
+            background-color: var(--bg-card);
+            padding: 50px;
+            border-radius: 4px;
+            box-shadow: var(--shadow-sm);
+            margin-top: 20px;
+        }
+
+        .entry-content-view h1 {
+            font-size: 2.2rem;
+            margin-top: 0;
+        }
+
+        .entry-content-view p {
+            font-size: 1.15rem;
+            margin-bottom: 1.8em;
+        }
+
+        .entry-content-view blockquote {
+            border-left: 4px solid var(--accent);
+            margin: 0;
+            padding-left: 20px;
+            font-style: italic;
+            color: #555;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            padding: 40px 0;
+            background-color: #f4f4f4;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-link {
+            color: var(--text-muted);
+            margin-left: 10px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                font-size: 0.85rem;
+            }
+
+            .entry-list {
+                grid-template-columns: 1fr;
+            }
+
+            .entry-content-view {
+                padding: 25px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+</head>
+
+<body>
+    <nav>
+        <div class="container nav-container">
+            <a href="/" class="nav-logo">Sue's Life & Work Log</a>
+            <div class="nav-links">
+                <a href="/work" class="nav-link {{ 'active' if category == 'work' }}">Work</a>
+                <a href="/life" class="nav-link {{ 'active' if category and 'life' in category }}">Life</a>
+                <a href="/videos" class="nav-link {{ 'active' if category == 'videos' }}">Videos</a>
+                <a href="/podcasts" class="nav-link {{ 'active' if category == 'podcasts' }}">Podcasts</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    {% if not category and request.path == '/' %}
+    <div class="hero-section" style="padding: 100px 0; background-image: url('{{ url_for('static', filename='images/hero_workspace_v3.svg') }}?v=watercolor'); background-size: cover; background-position: center;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.5);"></div>
+        
+        <div class="hero-content" style="position: relative; z-index: 2;">
+            <h1 class="hero-title" style="text-shadow: 2px 2px 4px rgba(255,255,255,0.9);">Sue's Creative Studio</h1>
+            <p class="hero-subtitle" style="text-shadow: 1px 1px 2px rgba(255,255,255,0.9); font-weight: 600;">Everyday moments, captured in warmth and light.</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="container content-wrapper">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <div class="container">
+            &copy; 2026 Sue's Life & Work Log.
+            <a href="/admin" class="footer-link">Admin Panel</a>
+        </div>
+    </footer>
+</body>
+
+</html>

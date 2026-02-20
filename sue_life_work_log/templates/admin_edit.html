@@ -1,0 +1,30 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<div class="entry-header">
+    <h1 class="entry-title">編輯 (Edit): {{ filename }}</h1>
+    <a href="/admin" class="btn" style="float: right; margin-top: -50px; padding: 5px 15px; font-size: 0.9rem; color: var(--text-main) !important; background-color: var(--bg-card); border: 1px solid var(--border);">返回列表</a>
+</div>
+
+<div class="entry-content">
+    <form action="/admin/save" method="post">
+        <input type="hidden" name="category" value="{{ category }}">
+        <input type="hidden" name="filename" value="{{ filename }}">
+
+        <div style="margin-bottom: 20px;">
+            <label for="content" style="display: block; margin-bottom: 10px; font-weight: bold;">內容 (Markdown):</label>
+            <textarea id="content" name="content"
+                style="width: 100%; height: 600px; font-family: monospace; font-size: 16px; padding: 15px; border: 1px solid var(--border); border-radius: 8px; background-color: #fff; resize: vertical;">{{ content }}</textarea>
+        </div>
+
+        <div style="text-align: right;">
+            <a href="/admin" class="btn"
+                style="background-color: transparent; color: var(--text-muted) !important; border-color: var(--border); margin-right: 15px;">取消
+                (Cancel)</a>
+            <button type="submit" class="btn"
+                style="background-color: var(--accent); color: white; border-color: var(--accent); cursor: pointer;">儲存變更
+                (Save Changes)</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

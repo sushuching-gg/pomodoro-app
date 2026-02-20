@@ -1,0 +1,69 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<div class="entry-header">
+    <h1 class="entry-title">後台管理 (Admin Panel)</h1>
+    <p>管理您的日常生活與工作紀錄</p>
+    <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="/admin/upload" class="btn" style="text-decoration: none; padding: 10px 20px; font-weight: bold;">+ 新增日誌 (New Entry)</a>
+        <a href="/" class="btn" style="text-decoration: none; background-color: var(--bg-card); border: 1px solid var(--border); color: var(--text-main) !important;">返回首頁 (Home)</a>
+    </div>
+</div>
+
+<div class="entry-content">
+    {# Define categories with their display names #}
+    {% set categories = {
+        'work': '工作日誌 (Work)',
+        'life_travel': '生活 - 旅遊 (Life: Travel)',
+        'life_daily_me': '生活 - 我自己 (Life: Me)',
+        'life_daily_grandma': '生活 - 阿嬤 (Life: Grandma)',
+        'videos': '影片專案 (Videos)',
+        'podcasts': 'Podcast'
+    } %}
+
+    {% for category_key, category_name in categories.items() %}
+    <h2 style="margin-top: 40px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">{{ category_name }}</h2>
+    
+    {% if files.get(category_key) %}
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead style="background-color: var(--bg-card);">
+                <tr>
+                    <th style="text-align: left; padding: 10px; border-bottom: 2px solid var(--border);">日期</th>
+                    <th style="text-align: left; padding: 10px; border-bottom: 2px solid var(--border);">標題</th>
+                    <th style="text-align: right; padding: 10px; border-bottom: 2px solid var(--border);">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in files[category_key] %}
+                <tr style="border-bottom: 1px solid var(--border);">
+                    <td style="padding: 10px;">{{ file.date }}</td>
+                    <td style="padding: 10px;">
+                        <a href="/entry/{{ category_key }}/{{ file.filename }}" target="_blank" style="font-weight: bold; color: var(--accent);">{{ file.title }}</a>
+                    </td>
+                    <td style="text-align: right; padding: 10px; white-space: nowrap;">
+                        <a href="/admin/edit/{{ category_key }}/{{ file.filename }}" class="btn" 
+                           style="padding: 5px 10px; font-size: 0.8rem; margin: 0 5px; background-color: var(--bg-card); border: 1px solid var(--border); color: var(--text-main) !important;">編輯</a>
+                        
+                        <form action="/admin/delete/{{ category_key }}/{{ file.filename }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn" 
+                                    style="padding: 5px 10px; font-size: 0.8rem; margin: 0; background-color: #e74c3c; border: none; color: white; cursor: pointer;"
+                                    onclick="return confirm('確定要刪除 [{{ file.title }}] 嗎？此動作無法復原。');">刪除</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p style="color: var(--text-muted); padding: 10px; background-color: var(--bg-card); border-radius: 4px;">此分類目前沒有資料。</p>
+    {% endif %}
+    {% endfor %}
+
+    <div style="margin-top: 60px; padding: 20px; background-color: var(--bg-card); border-radius: 8px; text-align: center;">
+        <p>提示：您可以使用手機瀏覽器連線至此頁面，直接上傳照片與文字。</p>
+    </div>
+</div>
+{% endblock %}

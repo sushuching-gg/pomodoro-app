@@ -1,0 +1,48 @@
+﻿{
+  must_have_clauses: [
+    {
+      category: Intellectual Property (智慧財產權),
+      keywords: [智慧財產權, 智財, 授權, 歸屬],
+      description: 必須明確定義產出之軟硬體、數據、教材等智慧財產權歸屬 (通常要求歸機關所有或機關擁有無償使用權)。,
+      risk_level: High
+    },
+    {
+      category: Data Privacy (個資保護),
+      keywords: [個資, 個人資料, 隱私],
+      description: 涉及民眾參與之場域實證，必須包含個資蒐集、處理與利用之同意條款。,
+      risk_level: High
+    },
+    {
+      category: Insurance (保險),
+      keywords: [保險, 公共意外責任險, 平安險],
+      description: 實證場域若涉及民眾身體活動，必須規範廠商投保相關保險。,
+      risk_level: Medium
+    },
+    {
+      category: Information Security (資訊安全),
+      keywords: [資安, 資訊安全, 加密, 弱點掃描],
+      description: 若涉及 App 或網站開發，需規範資安檢測標準 (如通過弱掃)。,
+      risk_level: Medium
+    },
+    {
+      category: Acceptance Criteria (驗收標準),
+      keywords: [驗收, 查驗, 測試報告, 績效],
+      description: 需定義明確的驗收條件，包含 KPI 達成率與交付項目清單。,
+      risk_level: High
+    }
+  ],
+  forbidden_clauses: [
+    {
+       category: Unreasonable Payment (不合理付款),
+       keywords: [一次付清, 無保留款],
+       description: 避免廠商要求簽約即全額付款，應分期撥付以確保履約。,
+       risk_level: Medium
+    }
+  ],
+  recommended_sections: [
+    服務建議書徵選項目,
+    專案管理計畫,
+    場域實證規劃,
+    經費預算表
+  ]
+}

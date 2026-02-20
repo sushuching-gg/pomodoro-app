@@ -1,0 +1,289 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="header-section" style="display:none;" style="text-align: center; margin-bottom: 60px;">
+    <h1>{{ title or "Sue's Life & Work Log" }}</h1>
+    <p class="subtitle" style="font-size: 1.2rem; color: var(--text-muted); font-style: italic;">Capturing the moments
+        of life and the progress of work</p>
+</div>
+
+{# Work Section #}
+<div class="category-section">
+    <div class="section-header">
+        <div style="display:flex; align-items:center;"> <div class="icon-wrapper" style="width: 60px; height: 50px; margin-right: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden;"><svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="watercolor">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.4" />
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.9 0" />
+    </filter>
+  </defs>
+
+  <!-- Background Wall Wash -->
+  <rect width="400" height="200" fill="#f0f8ff" opacity="0.5" filter="url(#watercolor)"/>
+
+  <!-- Desk Surface -->
+  <rect y="200" width="400" height="100" fill="#dab88b" opacity="0.8" filter="url(#watercolor)"/>
+
+  <!-- Laptop Open -->
+  <path d="M80 150 L220 150 L220 230 L80 230 Z" fill="#2c3e50" filter="url(#watercolor)"/> <!-- Screen Back -->
+  <path d="M90 160 L210 160 L210 220 L90 220 Z" fill="#87CEEB" opacity="0.7" filter="url(#watercolor)"/> <!-- Screen Blue -->
+  <path d="M60 230 L240 230 L250 240 L50 240 Z" fill="#7f8c8d" filter="url(#watercolor)"/> <!-- Keyboard Base -->
+
+  <!-- Stack of Books -->
+  <rect x="260" y="210" width="80" height="15" fill="#e74c3c" filter="url(#watercolor)"/>
+  <rect x="265" y="195" width="70" height="15" fill="#3498db" filter="url(#watercolor)"/>
+  <rect x="270" y="180" width="60" height="15" fill="#2ecc71" filter="url(#watercolor)"/>
+
+  <!-- Coffee Mug -->
+  <path d="M30 220 Q30 250 60 250 Q90 250 90 220 Z" fill="#ecf0f1" filter="url(#watercolor)"/>
+  <path d="M30 220 L90 220" stroke="#bdc3c7" stroke-width="2" />
+  <path d="M90 230 Q100 230 100 240 Q100 250 90 250" fill="none" stroke="#ecf0f1" stroke-width="3" filter="url(#watercolor)"/>
+
+  <!-- Plant -->
+  <path d="M350 200 Q330 150 360 140" fill="none" stroke="#27ae60" stroke-width="8" filter="url(#watercolor)"/>
+  <path d="M350 200 Q380 160 390 180" fill="none" stroke="#2ecc71" stroke-width="8" filter="url(#watercolor)"/>
+  <rect x="340" y="200" width="30" height="30" fill="#e67e22" filter="url(#watercolor)"/>
+
+</svg>
+</div> <h2>Work Journal</h2> </div>
+        <a href="/work" class="see-all">VIEW ALL</a>
+    </div>
+
+    {% if work %}
+    <ul class="entry-list">
+        {% for post in work %}
+        <li class="entry-item">
+            <span class="entry-date">{{ post.date }}</span>
+            <h3 class="entry-title"><a href="/entry/work/{{ post.filename }}">{{ post.title }}</a></h3>
+            <div class="entry-summary">
+                {{ post.content[:120] | striptags }}...
+            </div>
+            <a href="/entry/work/{{ post.filename }}" class="btn"
+                style="align-self: flex-start; margin-top: auto; padding: 8px 16px; font-size: 0.85rem;">Read More</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p style="color: var(--text-muted); font-style: italic;">No work entries yet.</p>
+    {% endif %}
+</div>
+
+{# Life: Me #}
+<div class="category-section">
+    <div class="section-header">
+        <div style="display:flex; align-items:center;"> <div class="icon-wrapper" style="width: 60px; height: 50px; margin-right: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden;"><svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="watercolor">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Background Wash -->
+  <rect width="400" height="300" fill="#fff5ee" opacity="0.6" filter="url(#watercolor)"/>
+
+  <!-- Suitcase -->
+  <rect x="50" y="80" width="200" height="150" rx="10" fill="#8B4513" filter="url(#watercolor)"/> <!-- Leather Brown -->
+  <rect x="50" y="80" width="200" height="150" rx="10" stroke="#5D4037" stroke-width="3" fill="none" filter="url(#watercolor)"/>
+  <rect x="70" y="80" width="20" height="150" fill="#A0522D" opacity="0.5" filter="url(#watercolor)"/>
+  <rect x="210" y="80" width="20" height="150" fill="#A0522D" opacity="0.5" filter="url(#watercolor)"/>
+  <path d="M120 80 V60 Q150 40 180 60 V80" fill="none" stroke="#5D4037" stroke-width="8" filter="url(#watercolor)"/> <!-- Handle -->
+
+  <!-- Camera hanging off side -->
+  <rect x="280" y="160" width="100" height="70" rx="5" fill="#2c3e50" filter="url(#watercolor)"/>
+  <circle cx="330" cy="195" r="25" fill="#95a5a6" stroke="#fff" stroke-width="2" filter="url(#watercolor)"/>
+  <rect x="300" y="150" width="30" height="10" fill="#2c3e50" filter="url(#watercolor)"/>
+
+  <!-- Map behind -->
+  <path d="M250 50 L380 20 L390 140 L260 170 Z" fill="#f1c40f" opacity="0.4" filter="url(#watercolor)"/>
+  
+  <!-- Polaroid -->
+  <rect x="20" y="200" width="80" height="90" fill="#fff" transform="rotate(-10 60 245)" filter="url(#watercolor)"/>
+  <rect x="30" y="210" width="60" height="60" fill="#333" transform="rotate(-10 60 245)" opacity="0.8" filter="url(#watercolor)"/>
+
+</svg>
+</div> <h2>Life: My Stories</h2> </div>
+        <a href="/life/daily/me" class="see-all">VIEW ALL</a>
+    </div>
+
+    {% if daily_me %}
+    <ul class="entry-list">
+        {% for post in daily_me %}
+        <li class="entry-item">
+            <span class="entry-date">{{ post.date }}</span>
+            <h3 class="entry-title"><a href="/entry/life_daily_me/{{ post.filename }}">{{ post.title }}</a></h3>
+            <div class="entry-summary">
+                {{ post.content[:120] | striptags }}...
+            </div>
+            <a href="/entry/life_daily_me/{{ post.filename }}" class="btn"
+                style="align-self: flex-start; margin-top: auto; padding: 8px 16px; font-size: 0.85rem;">Read More</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p style="color: var(--text-muted); font-style: italic;">No personal stories yet.</p>
+    {% endif %}
+</div>
+
+{# Life: Travel #}
+{% if travel %}
+<div class="category-section">
+    <div class="section-header">
+        <div style="display:flex; align-items:center;"> <div class="icon-wrapper" style="width: 60px; height: 50px; margin-right: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden;"><svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="watercolor">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Background Wash -->
+  <rect width="400" height="300" fill="#fff5ee" opacity="0.6" filter="url(#watercolor)"/>
+
+  <!-- Suitcase -->
+  <rect x="50" y="80" width="200" height="150" rx="10" fill="#8B4513" filter="url(#watercolor)"/> <!-- Leather Brown -->
+  <rect x="50" y="80" width="200" height="150" rx="10" stroke="#5D4037" stroke-width="3" fill="none" filter="url(#watercolor)"/>
+  <rect x="70" y="80" width="20" height="150" fill="#A0522D" opacity="0.5" filter="url(#watercolor)"/>
+  <rect x="210" y="80" width="20" height="150" fill="#A0522D" opacity="0.5" filter="url(#watercolor)"/>
+  <path d="M120 80 V60 Q150 40 180 60 V80" fill="none" stroke="#5D4037" stroke-width="8" filter="url(#watercolor)"/> <!-- Handle -->
+
+  <!-- Camera hanging off side -->
+  <rect x="280" y="160" width="100" height="70" rx="5" fill="#2c3e50" filter="url(#watercolor)"/>
+  <circle cx="330" cy="195" r="25" fill="#95a5a6" stroke="#fff" stroke-width="2" filter="url(#watercolor)"/>
+  <rect x="300" y="150" width="30" height="10" fill="#2c3e50" filter="url(#watercolor)"/>
+
+  <!-- Map behind -->
+  <path d="M250 50 L380 20 L390 140 L260 170 Z" fill="#f1c40f" opacity="0.4" filter="url(#watercolor)"/>
+  
+  <!-- Polaroid -->
+  <rect x="20" y="200" width="80" height="90" fill="#fff" transform="rotate(-10 60 245)" filter="url(#watercolor)"/>
+  <rect x="30" y="210" width="60" height="60" fill="#333" transform="rotate(-10 60 245)" opacity="0.8" filter="url(#watercolor)"/>
+
+</svg>
+</div> <h2>Travel Adventures</h2> </div>
+        <a href="/life/travel" class="see-all">VIEW ALL</a>
+    </div>
+
+    <ul class="entry-list">
+        {% for post in travel %}
+        <li class="entry-item">
+            <span class="entry-date">{{ post.date }}</span>
+            <h3 class="entry-title"><a href="/entry/life_travel/{{ post.filename }}">{{ post.title }}</a></h3>
+            <a href="/entry/life_travel/{{ post.filename }}" class="btn"
+                style="align-self: flex-start; margin-top: 15px; padding: 8px 16px; font-size: 0.85rem;">Read
+                Adventure</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{# Videos #}
+{% if videos %}
+<div class="category-section">
+    <div class="section-header">
+        <div style="display:flex; align-items:center;"> <div class="icon-wrapper" style="width: 60px; height: 50px; margin-right: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden;"><svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="watercolor">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Background Wash -->
+  <rect width="400" height="300" fill="#e6e6fa" opacity="0.4" filter="url(#watercolor)"/>
+
+  <!-- Clapperboard Large -->
+  <g transform="translate(50, 50) rotate(-5)">
+    <rect x="0" y="60" width="200" height="140" fill="#2c3e50" filter="url(#watercolor)"/>
+    <rect x="0" y="0" width="200" height="50" fill="#2c3e50" transform="rotate(-15 0 50)" filter="url(#watercolor)"/>
+    
+    <!-- White Stripes -->
+    <path d="M20 10 L40 40 M60 0 L80 30" stroke="#fff" stroke-width="5" transform="rotate(-15 0 50)" filter="url(#watercolor)"/>
+  </g>
+
+  <!-- Film Reels -->
+  <circle cx="300" cy="200" r="70" fill="#34495e" filter="url(#watercolor)"/>
+  <circle cx="300" cy="200" r="20" fill="#ecf0f1" filter="url(#watercolor)"/>
+  <circle cx="300" cy="200" r="50" fill="none" stroke="#ecf0f1" stroke-width="2" stroke-dasharray="10,10" filter="url(#watercolor)"/>
+  
+  <!-- Film Strip Flowing -->
+  <path d="M300 270 Q200 300 100 250" fill="none" stroke="#2c3e50" stroke-width="20" opacity="0.8" filter="url(#watercolor)"/>
+  <path d="M300 270 Q200 300 100 250" fill="none" stroke="#ecf0f1" stroke-width="2" stroke-dasharray="5,5" opacity="0.8"/>
+
+</svg>
+</div> <h2>Video Projects</h2> </div>
+        <a href="/videos" class="see-all">VIEW ALL</a>
+    </div>
+
+    <ul class="entry-list">
+        {% for post in videos %}
+        <li class="entry-item">
+            <span class="entry-date">{{ post.date }}</span>
+            <h3 class="entry-title"><a href="/entry/videos/{{ post.filename }}">{{ post.title }}</a></h3>
+            <a href="/entry/videos/{{ post.filename }}" class="btn"
+                style="align-self: flex-start; margin-top: 15px; padding: 8px 16px; font-size: 0.85rem;">Watch Video</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+{# Podcasts #}
+{% if podcasts %}
+<div class="category-section">
+    <div class="section-header">
+        <div style="display:flex; align-items:center;"> <div class="icon-wrapper" style="width: 60px; height: 50px; margin-right: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden;"><svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="watercolor">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Background Wash -->
+  <rect width="400" height="300" fill="#fffacd" opacity="0.4" filter="url(#watercolor)"/>
+
+  <!-- Vintage Mic Center -->
+  <rect x="170" y="50" width="60" height="100" rx="20" fill="#f1c40f" filter="url(#watercolor)"/> <!-- Gold Mesh -->
+  <line x1="170" y1="70" x2="230" y2="70" stroke="#d35400" stroke-width="2" opacity="0.5"/>
+  <line x1="170" y1="90" x2="230" y2="90" stroke="#d35400" stroke-width="2" opacity="0.5"/>
+  <line x1="170" y1="110" x2="230" y2="110" stroke="#d35400" stroke-width="2" opacity="0.5"/>
+
+  <!-- Mic Stand -->
+  <rect x="190" y="150" width="20" height="100" fill="#34495e" filter="url(#watercolor)"/>
+  <path d="M150 250 L250 250" stroke="#34495e" stroke-width="10" filter="url(#watercolor)"/>
+  
+  <!-- Headphones hanging -->
+  <path d="M100 200 Q100 50 200 50 Q300 50 300 200" fill="none" stroke="#2c3e50" stroke-width="8" filter="url(#watercolor)"/>
+  <rect x="80" y="180" width="40" height="60" rx="10" fill="#2c3e50" filter="url(#watercolor)"/>
+  <rect x="280" y="180" width="40" height="60" rx="10" fill="#2c3e50" filter="url(#watercolor)"/>
+  
+  <!-- Sound Waves (Abstract) -->
+  <path d="M350 150 Q370 150 370 180 T350 210" fill="none" stroke="#e67e22" stroke-width="3" opacity="0.6" filter="url(#watercolor)"/>
+  <path d="M50 150 Q30 150 30 180 T50 210" fill="none" stroke="#e67e22" stroke-width="3" opacity="0.6" filter="url(#watercolor)"/>
+
+</svg>
+</div> <h2>Podcasts</h2> </div>
+        <a href="/podcasts" class="see-all">VIEW ALL</a>
+    </div>
+
+    <ul class="entry-list">
+        {% for post in podcasts %}
+        <li class="entry-item">
+            <span class="entry-date">{{ post.date }}</span>
+            <h3 class="entry-title"><a href="/entry/podcasts/{{ post.filename }}">{{ post.title }}</a></h3>
+            <a href="/entry/podcasts/{{ post.filename }}" class="btn"
+                style="align-self: flex-start; margin-top: 15px; padding: 8px 16px; font-size: 0.85rem;">Listen</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endblock %}

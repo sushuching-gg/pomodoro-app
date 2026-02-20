@@ -1,0 +1,26 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="watercolor-filter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.6" />
+    </filter>
+  </defs>
+
+  <!-- Warm/Pink Wash -->
+  <ellipse cx="100" cy="100" rx="90" ry="80" fill="#fff0f5" opacity="0.7" filter="url(#watercolor-filter)" />
+
+  <!-- Suitcase -->
+  <rect x="40" y="80" width="80" height="60" rx="5" fill="#A0522D" filter="url(#watercolor-filter)" />
+  <rect x="40" y="80" width="80" height="60" rx="5" stroke="#5C3317" stroke-width="2" fill="none" opacity="0.6" filter="url(#watercolor-filter)" />
+  <path d="M70 80 V70 Q80 60 90 70 V80" fill="none" stroke="#5C3317" stroke-width="4" filter="url(#watercolor-filter)"/>
+
+  <!-- Camera -->
+  <rect x="100" y="120" width="60" height="40" rx="3" fill="#333" filter="url(#watercolor-filter)" />
+  <circle cx="130" cy="140" r="15" fill="#555" stroke="#ddd" stroke-width="2" filter="url(#watercolor-filter)" />
+  <rect x="110" y="115" width="20" height="5" fill="#333" filter="url(#watercolor-filter)" />
+
+  <!-- Map element -->
+  <path d="M140 60 L180 40 L190 90 L150 110 Z" fill="#F0E68C" opacity="0.8" filter="url(#watercolor-filter)" />
+  <path d="M140 60 L180 40 M180 40 L190 90 M190 90 L150 110 M150 110 L140 60" stroke="#DAA520" stroke-width="1" fill="none" filter="url(#watercolor-filter)"/>
+</svg>

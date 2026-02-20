@@ -1,0 +1,6 @@
+typer
+rich
+markdown
+pyyaml
+python-frontmatter
+flask

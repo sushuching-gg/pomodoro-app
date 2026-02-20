@@ -1,0 +1,31 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="watercolor">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="4" result="noise" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+      <feGaussianBlur stdDeviation="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Background Wash -->
+  <rect width="400" height="300" fill="#e6e6fa" opacity="0.4" filter="url(#watercolor)"/>
+
+  <!-- Clapperboard Large -->
+  <g transform="translate(50, 50) rotate(-5)">
+    <rect x="0" y="60" width="200" height="140" fill="#2c3e50" filter="url(#watercolor)"/>
+    <rect x="0" y="0" width="200" height="50" fill="#2c3e50" transform="rotate(-15 0 50)" filter="url(#watercolor)"/>
+    
+    <!-- White Stripes -->
+    <path d="M20 10 L40 40 M60 0 L80 30" stroke="#fff" stroke-width="5" transform="rotate(-15 0 50)" filter="url(#watercolor)"/>
+  </g>
+
+  <!-- Film Reels -->
+  <circle cx="300" cy="200" r="70" fill="#34495e" filter="url(#watercolor)"/>
+  <circle cx="300" cy="200" r="20" fill="#ecf0f1" filter="url(#watercolor)"/>
+  <circle cx="300" cy="200" r="50" fill="none" stroke="#ecf0f1" stroke-width="2" stroke-dasharray="10,10" filter="url(#watercolor)"/>
+  
+  <!-- Film Strip Flowing -->
+  <path d="M300 270 Q200 300 100 250" fill="none" stroke="#2c3e50" stroke-width="20" opacity="0.8" filter="url(#watercolor)"/>
+  <path d="M300 270 Q200 300 100 250" fill="none" stroke="#ecf0f1" stroke-width="2" stroke-dasharray="5,5" opacity="0.8"/>
+
+</svg>

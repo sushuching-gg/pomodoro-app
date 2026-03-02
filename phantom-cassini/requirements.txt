@@ -1,0 +1,8 @@
+# Phantom Cassini - Dependencies
+pyyaml>=6.0
+python-docx>=0.8.11
+openpyxl>=3.1.0
+PyMuPDF>=1.22.0
+easyocr>=1.7.0
+numpy
+Pillow

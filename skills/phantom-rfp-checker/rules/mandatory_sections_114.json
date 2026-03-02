@@ -1,0 +1,98 @@
+﻿{
+  "meta": {
+    "version": "1.1 (114年度特化版)",
+    "source": "114年推動運動科技場域實證計畫-縣市採購招標需求書必要條件建議",
+    "last_updated": "2026-02-25",
+    "description": "針對 114 Q1 輔導期設計，強化資安、KPI 與智財權檢核"
+  },
+  "mandatory_sections": [
+    {
+      "id": "SEC_01",
+      "name": "採購目的",
+      "aliases": ["招標內容", "計畫目的", "背景說明"],
+      "required": true,
+      "keywords": ["場域", "運動科技", "效益", "實證"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["場域", "運動科技", "實證"], "min_match": 2},
+        {"type": "content_length", "min_chars": 100}
+      ]
+    },
+    {
+      "id": "SEC_02",
+      "name": "預算金額",
+      "aliases": ["計畫預算", "活動預算"],
+      "required": true,
+      "keywords": ["新臺幣", "萬元", "含稅", "固定金額"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["新臺幣", "萬元"], "min_match": 2},
+        {"type": "keyword_presence", "keywords": ["含稅"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_03",
+      "name": "技術規格與資通安全",
+      "aliases": ["需求說明", "工作項目", "規格"],
+      "required": true,
+      "keywords": ["規格", "功能", "資安", "弱點掃描", "HTTPS"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["規格", "功能"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["資通安全", "弱點掃描", "弱掃", "滲透測試"], "min_match": 1, "message": "114 年度必備：需包含資通安全弱點掃描或滲透測試相關條款。"}
+      ]
+    },
+    {
+      "id": "SEC_04",
+      "name": "績效指標 (KPI)",
+      "aliases": ["KPI", "績效指標"],
+      "required": true,
+      "keywords": ["體驗", "人次", "滿意度", "問卷"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["體驗", "人次"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["滿意度", "問卷"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["體育署", "縣市政府", "本部"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_05",
+      "name": "資料所有權及個資保護",
+      "aliases": ["資料所有權", "個資"],
+      "required": true,
+      "keywords": ["最高權限", "原始碼", "智慧財產權", "個資", "同意書"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["最高權限", "原始碼", "智慧財產權", "歸屬"], "min_match": 3},
+        {"type": "keyword_presence", "keywords": ["個人資料", "個資", "隱私"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["同意書"], "min_match": 1, "message": "建議加入參與民眾之個資採集同意書條款。"}
+      ]
+    },
+    {
+      "id": "SEC_06",
+      "name": "履約期限與驗收",
+      "required": true,
+      "keywords": ["決標", "履約", "驗收", "分期"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["決標"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["第一期", "第二期"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["核結", "體育署"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_07",
+      "name": "切結書",
+      "required": true,
+      "keywords": ["切結", "無償", "交接"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["切結", "承諾"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["無償", "交接", "原始碼"], "min_match": 2}
+      ]
+    }
+  ],
+  "standard_structure_order": [
+    "採購目的",
+    "履約期間",
+    "需求說明",
+    "預算金額",
+    "績效指標",
+    "履約期限與驗收",
+    "資料所有權歸屬及個資保護",
+    "切結書"
+  ]
+}

@@ -1,0 +1,4 @@
+  File "C:\Users\user\.gemini\antigravity\brain\My_AI_Project\sue_life_work_log\app.py", line 269
+    print("
+          ^
+SyntaxError: unterminated string literal (detected at line 269)

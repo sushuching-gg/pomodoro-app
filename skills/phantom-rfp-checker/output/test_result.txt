@@ -1,0 +1,22 @@
+﻿目標檔案: D:\1_working\3_資料存檔\2025\113訪視\113.6訪視執行階段(士倫檔案)\縣市需求說明書(招商版)\嘉義縣需求說明書.docx
+[開始] 解析文件：D:\1_working\3_資料存檔\2025\113訪視\113.6訪視執行階段(士倫檔案)\縣市需求說明書(招商版)\嘉義縣需求說明書.docx
+[解析] 完成：122 段落, 1 表格
+[檢核] 執行 17 項章節檢核...
+[完成] 報告已儲存至：c:\Users\user\.gemini\antigravity\brain\My_AI_Project\skills\phantom-rfp-checker\scripts\..\output\report_嘉義縣需求說明書_20260224_215727.txt
+
+C:\Python314\python.exe : Traceback (most recent call last):
+位於 線路:1 字元:1
++ C:\Python314\python.exe c:\Users\user\.gemini\antigravity\brain\My_AI ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "c:\Users\user\.gemini\antigravity\brain\My_AI_Project\skills\phantom-rfp-checker\scripts\test_run.py", line 30,
+ in <module>
+    rfp_checker.main()
+    ~~~~~~~~~~~~~~~~^^
+  File "c:\Users\user\.gemini\antigravity\brain\My_AI_Project\skills\phantom-rfp-checker\scripts\rfp_checker.py", line 
+453, in main
+    print(report)
+    ~~~~~^^^^^^^^
+UnicodeEncodeError: 'cp950' codec can't encode character '\u2705' in position 304: illegal multibyte sequence

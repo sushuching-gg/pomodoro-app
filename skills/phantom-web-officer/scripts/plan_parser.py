@@ -5,7 +5,7 @@ import re
 import docx
 
 def parse_plan(docx_path):
-    print(f'Parsing: {docx_path}')
+    # print(f'Parsing: {docx_path}')
     try:
         doc = docx.Document(docx_path)
     except Exception as e:

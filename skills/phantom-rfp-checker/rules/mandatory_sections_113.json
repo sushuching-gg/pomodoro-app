@@ -1,0 +1,206 @@
+﻿{
+  "meta": {
+    "version": "1.0",
+    "source": "113年推動運動科技場域實證計畫-縣市採購招標需求書必要條件指引",
+    "last_updated": "2026-02-24",
+    "description": "縣市招標需求書必要章節與檢核規則"
+  },
+  "mandatory_sections": [
+    {
+      "id": "SEC_01",
+      "name": "採購目的",
+      "aliases": ["招標內容", "計畫目的", "背景說明"],
+      "required": true,
+      "keywords": ["場域", "運動科技", "效益"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["場域", "運動科技"], "min_match": 1},
+        {"type": "content_length", "min_chars": 100}
+      ]
+    },
+    {
+      "id": "SEC_02",
+      "name": "預算金額",
+      "aliases": ["計畫預算", "活動預算"],
+      "required": true,
+      "keywords": ["新臺幣", "萬元", "含稅"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["新臺幣", "萬元"], "min_match": 2},
+        {"type": "keyword_presence", "keywords": ["含稅"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_03",
+      "name": "系統規格及驗證方式",
+      "aliases": ["需求說明", "工作項目"],
+      "required": true,
+      "keywords": ["規格", "系統", "平台", "功能"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["規格", "功能"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_04",
+      "name": "執行需求",
+      "aliases": ["本案執行需求", "工作項目"],
+      "required": true,
+      "keywords": ["場次", "人數", "期限", "KPI"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["場次", "人次", "人數"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["期限", "日前", "月"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_05",
+      "name": "文宣規範",
+      "required": true,
+      "keywords": ["政府機關政策文宣規劃注意事項"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["政府機關政策文宣規劃注意事項"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_06",
+      "name": "MIT證明",
+      "aliases": ["產品產地"],
+      "required": true,
+      "keywords": ["MIT", "產地", "證明"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["MIT", "產地證明", "產品產地", "產地之相關證明"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_07",
+      "name": "保固條款",
+      "required": true,
+      "keywords": ["保固", "年", "驗收"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["保固"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_08",
+      "name": "保險條款",
+      "required": false,
+      "keywords": ["保險", "公共意外責任險"],
+      "check_rules": [
+        {"type": "advisory_check", "keywords": ["保險", "公共意外責任險"]}
+      ]
+    },
+    {
+      "id": "SEC_09",
+      "name": "績效指標",
+      "aliases": ["KPI"],
+      "required": true,
+      "keywords": ["績效", "體驗", "人次", "問卷", "滿意度"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["執行計畫書"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["體驗", "人次"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["滿意度", "問卷"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["數位部", "體育署"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_10",
+      "name": "執行規定事項",
+      "required": true,
+      "keywords": ["機關同意", "會議", "廠商"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["機關同意", "送本機關同意"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["會議"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["系統實證經驗"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_11",
+      "name": "履約期限與驗收",
+      "aliases": ["履約期間", "驗收"],
+      "required": true,
+      "keywords": ["決標", "履約", "驗收", "階段"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["決標"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["第一期", "第二期"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["期末報告"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["體育署", "核結"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_12",
+      "name": "付款方式",
+      "required": true,
+      "keywords": ["付款", "分期", "契約價金"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["固定金額"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["減項", "減價收受", "逾期違約金", "逾期", "罰"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_13",
+      "name": "贊助規範",
+      "required": true,
+      "keywords": ["合作廠商", "贊助", "冠名"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["合作廠商"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["冠名"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_14",
+      "name": "結案報告書",
+      "required": true,
+      "keywords": ["結案報告", "份", "電子檔"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["結案報告", "3份"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["PDF", "JPG"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["教育部", "格式"], "min_match": 2},
+        {"type": "keyword_presence", "keywords": ["光碟"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_15",
+      "name": "資料所有權歸屬及個資保護",
+      "aliases": ["資料所有權", "個資保護"],
+      "required": true,
+      "keywords": ["最高權限", "原始碼", "智慧財產權", "個資"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["最高權限", "原始碼", "智慧財產權"], "min_match": 3},
+        {"type": "keyword_presence", "keywords": ["個人資料", "個資"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["同意書"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_16",
+      "name": "切結書",
+      "required": true,
+      "keywords": ["切結", "承諾", "無償", "交接"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["切結", "承諾"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["無償", "無條件"], "min_match": 1},
+        {"type": "keyword_presence", "keywords": ["原始碼", "交接"], "min_match": 2},
+        {"type": "keyword_presence", "keywords": ["拒絕往來廠商"], "min_match": 1}
+      ]
+    },
+    {
+      "id": "SEC_17",
+      "name": "修正權保留",
+      "required": true,
+      "keywords": ["保留", "修正", "權利"],
+      "check_rules": [
+        {"type": "keyword_presence", "keywords": ["保留", "修正", "權利"], "min_match": 3}
+      ]
+    }
+  ],
+  "standard_structure_order": [
+    "採購目的/背景說明",
+    "履約期間",
+    "需求說明/工作項目",
+    "系統規格及驗證方式",
+    "預算金額",
+    "績效指標",
+    "執行規定事項",
+    "履約期限與驗收",
+    "付款方式",
+    "結案報告書",
+    "資料所有權歸屬及個資保護準則",
+    "切結書"
+  ]
+}

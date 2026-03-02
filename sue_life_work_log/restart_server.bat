@@ -4,19 +4,27 @@ set "PROJECT_DIR=c:\Users\user\.gemini\antigravity\brain\My_AI_Project\sue_life_
 
 cd /d "%PROJECT_DIR%"
 
-echo [Sue's Work Log] Ensuring port 5000 is clear...
+echo.
+echo ==========================================
+echo [Sue's Work Log] Server Startup
+echo ==========================================
+echo.
+
+echo [1/2] Cleaning up Port 5000...
 for /f "tokens=5" %%a in ('netstat -aon ^| find ":5000"') do (
-    echo Killing process %%a...
     taskkill /f /pid %%a >nul 2>&1
 )
 
+echo [2/2] Starting Flask Server...
 echo.
-echo [Sue's Work Log] Starting Web Server...
+echo TIP: If mobile cannot connect, run fix_network.bat first.
+echo.
+
 "%PYTHON_PATH%" app.py
 
 if errorlevel 1 (
     echo.
-    echo ERROR: Server crashed.
+    echo [ERROR] Server stopped unexpectedly.
     pause
 )
 pause

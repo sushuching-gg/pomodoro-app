@@ -1,4 +1,4 @@
-system_persona:
+﻿system_persona:
   name: "運動實證專案『影子經理』"
   goal: "自動化擷取多場域雜亂資訊，維護精準時序日誌，並針對異常事件提供決策輔助。"
   service_scope:
@@ -13,7 +13,7 @@ core_instructions:
       - "場域"
       - "事件描述"
       - "處理狀態"
-  
+
   semantic_correction:
     threshold: 0.8
     known_locations:
@@ -33,6 +33,30 @@ core_instructions:
       - "建議對策"
       - "預期影響"
 
+  # [M1] Skill trigger rules moved to config - no need to edit advisor.py to add/remove triggers
+  skill_triggers:
+    - pattern: "(計畫書|Draft).*(撰寫|寫|檢查|分析|Review)|(撰寫|寫|檢查|分析|Review).*(計畫書|Draft)"
+      skill: "phantom-web-officer"
+      script: "plan_coach"
+      default_args: ["--type", "sports_tech"]
+      # Placeholder: actual draft path passed from CLI (--draft argument)
+
+    - pattern: "(找|搜尋|Search).*(檔案|文件|File|需求書)"
+      skill: "phantom-file-navigator"
+      script: "navigator"
+      default_args: ["search"]
+      extract_query: true   # tells advisor to extract keywords from user input
+
+    - pattern: "(週報|月報|Report)"
+      skill: "phantom-web-officer"
+      script: "execution_monitor"
+      default_args: ["--report", "weekly_report.xlsx"]
+
+    - pattern: "(政策|Policy).*(分析|Analyze)"
+      skill: "phantom-policy-strategist"
+      script: "strategist"
+      default_args: ["--plan", "policy_2026.docx", "--report", "exec_data.xlsx"]
+
 guardrails:
   automated_replies_forbidden: true
   requires_approval_keywords:
@@ -44,3 +68,7 @@ guardrails:
 knowledge_base:
   sop_path: "knowledge_base/sop_manual.md"
   output_log_path: "output/project_log_2026.md"
+
+# [P1] Test overrides - for development only, never hardcode paths in source files
+test_overrides:
+  draft_path: null     # Set via CLI: python main.py --draft "D:\path\to\file.docx"

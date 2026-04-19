@@ -97,7 +97,7 @@
             ring.style.strokeDashoffset = circ - (timeLeft / ( (mode==='focus'?FOCUS_M:BREAK_M)*60 ) * circ);
             document.getElementById('main-btn').innerText = isRunning ? '暫停 (PAUSE)' : '開始 (START)';
             document.getElementById('music-btn').classList.toggle('active', musicOn);
-            if (isRunning && musicOn) startAmbient(); else stopAmbient();
+            if (musicOn) startAmbient(); else stopAmbient();
         }
 
         let audioCtx = null, noiseNode = null, oscNode = null, lfoNode = null;
@@ -105,17 +105,37 @@
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }
+        
         function startAmbient() {
-            initAudio(); if (noiseNode || oscNode) return;
-            if (mode === 'focus') {
+            initAudio(); 
+            // 如果已經在播了，且模式沒變，就不用理會
+            if (noiseNode && mode === 'focus') return;
+            if (oscNode && mode === 'break') return;
+            
+            // 如果模式變了，先把舊的殺掉重開
+            stopAmbient();
+            
+            const now = audioCtx.currentTime;
+            if (mode === 'focus') { 
                 const bufferSize = 2 * audioCtx.sampleRate, buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate), data = buffer.getChannelData(0);
                 for (let i=0; i<bufferSize; i++) data[i] = Math.random() * 2 - 1;
                 noiseNode = audioCtx.createBufferSource(); noiseNode.buffer = buffer; noiseNode.loop = true;
-                const filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 1000;
-                const gain = audioCtx.createGain(); gain.gain.value = 0.04;
+                const filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 800; // 更柔和的白噪音
+                const gain = audioCtx.createGain(); gain.gain.value = 0.08; // 調高音量
                 noiseNode.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
                 noiseNode.start();
-            } else {
+            } else { 
+                oscNode = audioCtx.createOscillator(); oscNode.type = 'sine'; oscNode.frequency.value = 330;
+                const gain = audioCtx.createGain();
+                lfoNode = audioCtx.createOscillator(); lfoNode.type = 'sine'; lfoNode.frequency.value = 0.2;
+                const lfoGain = audioCtx.createGain(); lfoGain.gain.value = 0.03;
+                lfoNode.connect(lfoGain); lfoGain.connect(gain.gain);
+                gain.gain.setValueAtTime(0.05, now);
+                oscNode.connect(gain); gain.connect(audioCtx.destination);
+                lfoNode.start(); oscNode.start();
+            }
+        }
+ else {
                 oscNode = audioCtx.createOscillator(); oscNode.type = 'sine'; oscNode.frequency.value = 330;
                 const gain = audioCtx.createGain();
                 lfoNode = audioCtx.createOscillator(); lfoNode.type = 'sine'; lfoNode.frequency.value = 0.2;

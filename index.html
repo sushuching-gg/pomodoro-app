@@ -81,13 +81,19 @@
             function stopAudio() { if (noise) { try{noise.stop();}catch(e){} noise=null; } if (osc) { try{osc.stop();lfo.stop();}catch(e){} osc=null; } }
             function startAudio() {
                 initAudio(); if (noise || osc) return;
-                if (mode === 'focus') {
-                    const b = audioCtx.createBuffer(1, 2*audioCtx.sampleRate, audioCtx.sampleRate), d = b.getChannelData(0);
-                    for(let i=0; i<b.length; i++) d[i] = Math.random()*2-1;
-                    noise = audioCtx.createBufferSource(); noise.buffer = b; noise.loop = true;
-                    const g = audioCtx.createGain(); g.gain.value = 0.15;
-                    noise.connect(g); g.connect(audioCtx.destination); noise.start();
-                } else {
+                
+            if (mode === 'focus') {
+                const b = audioCtx.createBuffer(1, 2*audioCtx.sampleRate, audioCtx.sampleRate), d = b.getChannelData(0);
+                let lastOut = 0;
+                for(let i=0; i<b.length; i++) {
+                    let white = Math.random() * 2 - 1;
+                    lastOut = (lastOut + (0.02 * white)) / 1.02; // 簡單的積分濾波器生成棕色噪音
+                    d[i] = lastOut * 3.5; // 自動補償音量
+                }
+                noise = audioCtx.createBufferSource(); noise.buffer = b; noise.loop = true;
+                const g = audioCtx.createGain(); g.gain.value = 0.1; // 降低一點音量讓它更舒服
+                noise.connect(g); g.connect(audioCtx.destination); noise.start();
+            } else {
                     osc = audioCtx.createOscillator(); osc.type = 'sine'; osc.frequency.value = 330;
                     const g = audioCtx.createGain(); 
                     lfo = audioCtx.createOscillator(); lfo.frequency.value = 0.2;

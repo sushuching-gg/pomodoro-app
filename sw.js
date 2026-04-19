@@ -1,6 +1,6 @@
-﻿const CACHE_NAME = 'pomodoro-v1';
+﻿const CACHE_NAME = 'pomodoro-v2';
 const ASSETS = [
-  './pomodoro.html',
+  './index.html',
   './manifest.json',
   './resized_transparent.png'
 ];

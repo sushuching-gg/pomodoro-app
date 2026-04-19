@@ -19,7 +19,7 @@
             display: flex; justify-content: center; align-items: center;
             min-height: 100vh; overflow: hidden; padding: 20px;
         }
-        body.flash-screen { background-color: rgba(255, 255, 255, 0.9) !important; transition: none !important; }
+        body.flash-screen { background-color: rgba(255, 255, 255, 1) !important; transition: none !important; }
         .app-container {
             width: 100%; max-width: 420px; background: var(--card-bg);
             border: 1px solid rgba(255,255,255,0.1); border-radius: 40px;
@@ -30,30 +30,32 @@
         .icon-btn { background: transparent; border: none; color: #94a3b8; font-size: 1.6rem; cursor: pointer; padding: 10px; }
         .icon-btn.active { color: #f43f5e; }
         .progress-ring-container { position: relative; width: 260px; height: 260px; margin: 15px 0; display: flex; justify-content: center; align-items: center; }
-        .time { font-size: 7.5rem; font-weight: 800; line-height: 1; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        .status { font-size: 1.3rem; color: var(--text-secondary); margin-bottom: 2rem; }
+        .time { font-size: 7.5rem; font-weight: 800; line-height: 1; text-shadow: 0 0 20px rgba(0,0,0,0.5); font-variant-numeric: tabular-nums; }
+        .status { font-size: 1.3rem; color: var(--text-secondary); margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 2px; }
         .controls { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
         .btn { width: 100%; padding: 1.2rem; border-radius: 20px; border: none; font-size: 1.3rem; font-weight: 700; cursor: pointer; }
         .btn-primary { background: var(--focus-color); color: #fff; }
         body.mode-break .btn-primary { background: var(--break-color); }
         .control-btn { background: rgba(255,255,255,0.1); color: #fff; width: 60px; height: 60px; border-radius: 50%; font-size: 1.2rem; }
+        /* 彈出層 */
         .overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); opacity:0; pointer-events:none; z-index:100; transition:0.3s; }
         .overlay.active { opacity:1; pointer-events:auto; }
-        .modal { position: fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1e293b; padding:2rem; border-radius:30px; width:90%; max-width:350px; z-index:110; display:none; }
-        .modal.active { display:block; }
-        input { padding: 8px; border-radius: 10px; border: none; width: 80px; text-align: center; }
+        .modal { position: fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#1e293b; padding:2rem; border-radius:30px; width:90%; max-width:350px; z-index:110; opacity:0; pointer-events:none; transition:0.3s; text-align:center; }
+        .modal.active { opacity:1; pointer-events:auto; }
+        .setting-row { display:flex; justify-content: space-between; margin: 15px 0; align-items: center; }
+        input { padding: 10px; border-radius: 12px; border: none; width: 80px; text-align: center; font-size: 1.1rem; background: #0f172a; color: #fff; }
     </style>
 </head>
 <body>
     <div class="app-container">
         <div class="top-bar">
-            <button class="icon-btn" id="music-btn"><i class="fas fa-music"></i></button>
-            <button class="icon-btn" id="settings-btn"><i class="fas fa-cog"></i></button>
+            <button class="icon-btn" id="music-btn" title="開啟音樂"><i class="fas fa-music"></i></button>
+            <button class="icon-btn" id="settings-btn" title="設定時間"><i class="fas fa-cog"></i></button>
         </div>
         <div class="progress-ring-container">
             <svg width="260" height="260" style="transform: rotate(-90deg); position:absolute;">
                 <circle stroke="rgba(255,255,255,0.05)" stroke-width="8" fill="transparent" r="120" cx="130" cy="130"/>
-                <circle id="progress-ring" stroke-width="8" fill="transparent" r="120" cx="130" cy="130" stroke-linecap="round"/>
+                <circle id="progress-ring" stroke-width="8" fill="transparent" r="120" cx="130" cy="130" stroke-linecap="round" style="transition: stroke-dashoffset 1s linear;"/>
             </svg>
             <svg viewBox="0 0 100 100" width="120" height="120" style="position:absolute;">
                 <path id="tomato-body" d="M50 90 C10 90 0 50 15 25 C25 10 40 10 50 15 C60 10 75 10 85 25 C100 50 90 90 50 90 Z" fill="var(--focus-color)"/>
@@ -68,7 +70,7 @@
         <div class="status" id="status-display">專注時間 (FOCUS)</div>
         <div class="controls">
             <button class="btn btn-primary" id="main-btn">開始 (START)</button>
-            <div style="display:flex; gap:1rem; margin-top:10px;">
+            <div style="display:flex; gap:1rem; margin-top:5px;">
                 <button class="btn control-btn" id="skip-btn"><i class="fas fa-forward-step"></i></button>
                 <button class="btn control-btn" id="end-btn"><i class="fas fa-stop"></i></button>
             </div>
@@ -76,10 +78,10 @@
     </div>
     <div class="overlay" id="overlay"></div>
     <div class="modal" id="settings-modal">
-        <h2 style="text-align:center; margin-bottom:1rem">時間設定</h2>
-        <div style="display:flex; justify-content: space-between; margin: 10px 0;">專注 (分) <input type="number" id="set-focus" value="25"></div>
-        <div style="display:flex; justify-content: space-between; margin: 10px 0;">休息 (分) <input type="number" id="set-break" value="5"></div>
-        <button class="btn btn-primary" id="save-btn" style="margin-top:10px">儲存</button>
+        <h2 style="margin-bottom:1.5rem">調整時間</h2>
+        <div class="setting-row"><span>專注 (分鐘)</span><input type="number" id="set-focus" value="25"></div>
+        <div class="setting-row"><span>休息 (分鐘)</span><input type="number" id="set-break" value="5"></div>
+        <button class="btn btn-primary" id="save-btn" style="margin-top:1rem">儲存並更新</button>
     </div>
     <script>
         let FOCUS_M = 25, BREAK_M = 5, timeLeft = FOCUS_M * 60, isRunning = false, mode = 'focus', timer = null, musicOn = false;
@@ -98,100 +100,69 @@
             if (isRunning && musicOn) startAmbient(); else stopAmbient();
         }
 
-        // 音頻引擎
-        
-        // 增強型音頻引擎
         let audioCtx = null, noiseNode = null, oscNode = null, lfoNode = null;
         function initAudio() { 
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             if (audioCtx.state === 'suspended') audioCtx.resume();
         }
-        
         function startAmbient() {
-            initAudio(); 
-            if (noiseNode || oscNode) return;
-            const now = audioCtx.currentTime;
-
-            if (mode === 'focus') { 
-                // 專注：下雨般的過濾白噪音
+            initAudio(); if (noiseNode || oscNode) return;
+            if (mode === 'focus') {
                 const bufferSize = 2 * audioCtx.sampleRate, buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate), data = buffer.getChannelData(0);
                 for (let i=0; i<bufferSize; i++) data[i] = Math.random() * 2 - 1;
                 noiseNode = audioCtx.createBufferSource(); noiseNode.buffer = buffer; noiseNode.loop = true;
                 const filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 1000;
-                const gain = audioCtx.createGain(); gain.gain.value = 0.05;
+                const gain = audioCtx.createGain(); gain.gain.value = 0.04;
                 noiseNode.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
                 noiseNode.start();
-            } else { 
-                // 休息：呼吸般的空靈正弦波
+            } else {
                 oscNode = audioCtx.createOscillator(); oscNode.type = 'sine'; oscNode.frequency.value = 330;
                 const gain = audioCtx.createGain();
-                // 模擬呼吸感 (LFO)
-                lfoNode = audioCtx.createOscillator(); lfoNode.type = 'sine'; lfoNode.frequency.value = 0.2; // 5秒一個循環
+                lfoNode = audioCtx.createOscillator(); lfoNode.type = 'sine'; lfoNode.frequency.value = 0.2;
                 const lfoGain = audioCtx.createGain(); lfoGain.gain.value = 0.02;
                 lfoNode.connect(lfoGain); lfoGain.connect(gain.gain);
-                gain.gain.setValueAtTime(0.03, now);
+                gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
                 oscNode.connect(gain); gain.connect(audioCtx.destination);
                 lfoNode.start(); oscNode.start();
             }
         }
- else { // 休息空靈音樂
-                oscNode = audioCtx.createOscillator(); oscNode.type = 'sine'; oscNode.frequency.value = 440;
-                const gain = audioCtx.createGain(); gain.gain.setValueAtTime(0, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 2);
-                oscNode.connect(gain); gain.connect(audioCtx.destination);
-                oscNode.start();
-            }
-        }
-        function stopAmbient() { 
-            if (noiseNode) { try { noiseNode.stop(); } catch(e){} noiseNode = null; } 
-            if (oscNode) { try { oscNode.stop(); } catch(e){} oscNode = null; } 
-        }
+        function stopAmbient() { if (noiseNode) { try{noiseNode.stop();}catch(e){} noiseNode = null; } if (oscNode) { try{oscNode.stop();lfoNode.stop();}catch(e){} oscNode = null; } }
 
-        function beep() {
-            initAudio(); const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-            o.frequency.value = 880; g.gain.value = 0.1;
-            o.connect(g); g.connect(audioCtx.destination);
-            o.start(); o.stop(audioCtx.currentTime + 0.1);
-        }
+        function beep() { initAudio(); const o = audioCtx.createOscillator(), g = audioCtx.createGain(); o.frequency.value = 880; g.gain.value = 0.1; o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + 0.1); }
 
         function tick() {
             if (timeLeft > 0) {
                 timeLeft--; 
                 if (timeLeft <= 5) { 
-                    beep(); 
-                    document.body.classList.add('flash-screen'); 
-                    setTimeout(()=>document.body.classList.remove('flash-screen'), 300); // 延長閃光到 300ms
-                    if (navigator.vibrate) navigator.vibrate(200); // 增加手機震動效果
+                    beep(); document.body.classList.add('flash-screen'); setTimeout(()=>document.body.classList.remove('flash-screen'), 300); 
+                    if (navigator.vibrate) navigator.vibrate(200);
                 }
                 update();
             } else {
                 isRunning = false; clearInterval(timer); stopAmbient();
-                alert(mode === 'focus' ? '專注結束！休息一下吧。' : '休息結束！準備開始。');
+                alert(mode === 'focus' ? '專注結束！休息中。' : '休息結束！開始專注。');
                 mode = mode === 'focus' ? 'break' : 'focus';
                 timeLeft = (mode === 'focus' ? FOCUS_M : BREAK_M) * 60;
                 update();
             }
         }
 
-        document.getElementById('main-btn').onclick = () => {
-            initAudio();
-            if (isRunning) { isRunning = false; clearInterval(timer); }
-            else { isRunning = true; timer = setInterval(tick, 1000); }
-            update();
-        };
+        document.getElementById('main-btn').onclick = () => { initAudio(); if (isRunning) { isRunning = false; clearInterval(timer); } else { isRunning = true; timer = setInterval(tick, 1000); } update(); };
+        document.getElementById('music-btn').onclick = () => { initAudio(); musicOn = !musicOn; update(); };
+        document.getElementById('skip-btn').onclick = () => { mode = mode === 'focus' ? 'break' : 'focus'; timeLeft = (mode === 'focus' ? FOCUS_M : BREAK_M) * 60; update(); };
+        document.getElementById('end-btn').onclick = () => { isRunning = false; clearInterval(timer); mode = 'focus'; timeLeft = FOCUS_M * 60; update(); };
 
-        document.getElementById('music-btn').onclick = () => { musicOn = !musicOn; update(); };
-        document.getElementById('settings-btn').onclick = () => { document.getElementById('overlay').classList.add('active'); document.getElementById('settings-modal').classList.add('active'); };
+        // 設定控制（恢復鎖定）
+        const overlay = document.getElementById('overlay'), modal = document.getElementById('settings-modal');
+        document.getElementById('settings-btn').onclick = () => { overlay.classList.add('active'); modal.classList.add('active'); };
         document.getElementById('save-btn').onclick = () => {
             FOCUS_M = parseInt(document.getElementById('set-focus').value) || 25;
             BREAK_M = parseInt(document.getElementById('set-break').value) || 5;
             timeLeft = (mode === 'focus' ? FOCUS_M : BREAK_M) * 60;
-            document.getElementById('overlay').classList.remove('active'); document.getElementById('settings-modal').classList.remove('active');
+            overlay.classList.remove('active'); modal.classList.remove('active');
             update();
         };
-        document.getElementById('overlay').onclick = () => { document.getElementById('overlay').classList.remove('active'); document.getElementById('settings-modal').classList.remove('active'); };
-        document.getElementById('skip-btn').onclick = () => { mode = mode === 'focus' ? 'break' : 'focus'; timeLeft = (mode === 'focus' ? FOCUS_M : BREAK_M) * 60; update(); };
-        document.getElementById('end-btn').onclick = () => { isRunning = false; clearInterval(timer); mode = 'focus'; timeLeft = FOCUS_M * 60; update(); };
+        overlay.onclick = () => { overlay.classList.remove('active'); modal.classList.remove('active'); };
 
         update();
         if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');

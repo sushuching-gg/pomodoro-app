@@ -101,30 +101,53 @@
         }
 
         let audioCtx = null, noiseNode = null, oscNode = null, lfoNode = null;
+        
         function initAudio() { 
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume().then(() => { console.log("Audio Resumed"); });
+            }
         }
+
+        
         
         function startAmbient() {
             initAudio(); 
-            // 如果已經在播了，且模式沒變，就不用理會
+            if (audioCtx.state === 'suspended') return;
+            
+            // 模式檢查：如果已經正確播放中，則不重複
             if (noiseNode && mode === 'focus') return;
             if (oscNode && mode === 'break') return;
-            
-            // 如果模式變了，先把舊的殺掉重開
-            stopAmbient();
-            
-            const now = audioCtx.currentTime;
-            if (mode === 'focus') { 
-                const bufferSize = 2 * audioCtx.sampleRate, buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate), data = buffer.getChannelData(0);
+
+            stopAmbient(); // 先清除舊的
+
+            if (mode === 'focus') {
+                const bufferSize = 2 * audioCtx.sampleRate;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
                 for (let i=0; i<bufferSize; i++) data[i] = Math.random() * 2 - 1;
-                noiseNode = audioCtx.createBufferSource(); noiseNode.buffer = buffer; noiseNode.loop = true;
-                const filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 800; // 更柔和的白噪音
-                const gain = audioCtx.createGain(); gain.gain.value = 0.08; // 調高音量
-                noiseNode.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
+                noiseNode = audioCtx.createBufferSource();
+                noiseNode.buffer = buffer;
+                noiseNode.loop = true;
+                const gain = audioCtx.createGain(); 
+                gain.gain.setValueAtTime(0.12, audioCtx.currentTime); // 提高音量
+                noiseNode.connect(gain); gain.connect(audioCtx.destination);
                 noiseNode.start();
-            } else { 
+            } else {
+                oscNode = audioCtx.createOscillator(); oscNode.type = 'sine';
+                oscNode.frequency.setValueAtTime(440, audioCtx.currentTime);
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                oscNode.connect(gain); gain.connect(audioCtx.destination);
+                oscNode.start();
+            }
+        }
+         catch(e) {} noiseNode = null; }
+            if (oscNode) { try { oscNode.stop(); } catch(e) {} oscNode = null; }
+        }
+ else { 
                 oscNode = audioCtx.createOscillator(); oscNode.type = 'sine'; oscNode.frequency.value = 330;
                 const gain = audioCtx.createGain();
                 lfoNode = audioCtx.createOscillator(); lfoNode.type = 'sine'; lfoNode.frequency.value = 0.2;
@@ -146,7 +169,7 @@
                 lfoNode.start(); oscNode.start();
             }
         }
-        function stopAmbient() { if (noiseNode) { try{noiseNode.stop();}catch(e){} noiseNode = null; } if (oscNode) { try{oscNode.stop();lfoNode.stop();}catch(e){} oscNode = null; } }
+        catch(e){} noiseNode = null; } if (oscNode) { try{oscNode.stop();lfoNode.stop();}catch(e){} oscNode = null; } }
 
         function beep() { initAudio(); const o = audioCtx.createOscillator(), g = audioCtx.createGain(); o.frequency.value = 880; g.gain.value = 0.1; o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime + 0.1); }
 
@@ -169,12 +192,12 @@
 
         document.getElementById('main-btn').onclick = () => { initAudio(); if (isRunning) { isRunning = false; clearInterval(timer); } else { isRunning = true; timer = setInterval(tick, 1000); } update(); };
         document.getElementById('music-btn').onclick = () => { initAudio(); musicOn = !musicOn; update(); };
-        document.getElementById('skip-btn').onclick = () => { mode = mode === 'focus' ? 'break' : 'focus'; timeLeft = (mode === 'focus' ? FOCUS_M : BREAK_M) * 60; update(); };
+        document.getElementById('skip-btn').onclick = () => { initAudio(); mode = mode === 'focus' ? 'break' : 'focus'; timeLeft = (mode === 'focus' ? FOCUS_M : BREAK_M) * 60; update(); };
         document.getElementById('end-btn').onclick = () => { isRunning = false; clearInterval(timer); mode = 'focus'; timeLeft = FOCUS_M * 60; update(); };
 
         // 設定控制（恢復鎖定）
         const overlay = document.getElementById('overlay'), modal = document.getElementById('settings-modal');
-        document.getElementById('settings-btn').onclick = () => { overlay.classList.add('active'); modal.classList.add('active'); };
+        document.getElementById('settings-btn').onclick = () => { initAudio(); overlay.classList.add('active'); modal.classList.add('active'); };
         document.getElementById('save-btn').onclick = () => {
             FOCUS_M = parseInt(document.getElementById('set-focus').value) || 25;
             BREAK_M = parseInt(document.getElementById('set-break').value) || 5;

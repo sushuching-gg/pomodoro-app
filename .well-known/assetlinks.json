@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "io.github.sushuching_gg.twa",
+    "sha256_cert_fingerprints": ["95:A8:DA:91:6E:49:36:CA:3D:BF:82:A0:F6:27:0A:46:6E:D2:53:FB:0C:FB:19:76:35:58:81:3A:C4:98:85:BD"]
+  }
+}]

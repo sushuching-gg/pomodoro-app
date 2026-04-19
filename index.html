@@ -201,7 +201,46 @@
             if (timeLeft > 0) {
                 timeLeft--;
                 if (timeLeft <= 5) { playBeep(); document.body.classList.add('flash-screen'); setTimeout(()=>document.body.classList.remove('flash-screen'), 150); }
-                updateDisplay();
+                
+        const overlay = document.getElementById('overlay');
+        const settingsModal = document.getElementById('settings-modal');
+        const settingsBtn = document.getElementById('settings-btn');
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
+
+        // 開啟設定
+        settingsBtn.onclick = () => {
+            if (isRunning) { isRunning = false; clearInterval(timerInterval); updateDisplay(); }
+            document.getElementById('setting-focus').value = Math.floor(FOCUS_TIME / 60);
+            document.getElementById('setting-break').value = Math.floor(BREAK_TIME / 60);
+            overlay.classList.add('active');
+            settingsModal.classList.add('active');
+        };
+
+        // 儲存設定
+        saveSettingsBtn.onclick = () => {
+            let f = parseInt(document.getElementById('setting-focus').value);
+            let b = parseInt(document.getElementById('setting-break').value);
+            if (!isNaN(f) && f > 0) FOCUS_TIME = f * 60;
+            if (!isNaN(b) && b > 0) BREAK_TIME = b * 60;
+            timeLeft = (currentMode === 'focus') ? FOCUS_TIME : BREAK_TIME;
+            overlay.classList.remove('active');
+            settingsModal.classList.remove('active');
+            updateDisplay();
+        };
+
+        overlay.onclick = () => {
+            overlay.classList.remove('active');
+            settingsModal.classList.remove('active');
+        };
+
+        // 音樂按鈕樣式切換
+        document.getElementById('music-btn').onclick = (e) => {
+            const i = e.currentTarget.querySelector('i');
+            i.classList.toggle('fa-music');
+            i.classList.toggle('fa-volume-mute');
+        };
+
+        updateDisplay();
             } else {
                 isRunning = false; clearInterval(timerInterval);
                 const msg = currentMode === 'focus' ? '該休息囉！' : '休息結束，開始專注！';
@@ -209,7 +248,46 @@
                 alert(msg);
                 currentMode = currentMode === 'focus' ? 'break' : 'focus';
                 timeLeft = currentMode === 'focus' ? FOCUS_TIME : BREAK_TIME;
-                updateDisplay();
+                
+        const overlay = document.getElementById('overlay');
+        const settingsModal = document.getElementById('settings-modal');
+        const settingsBtn = document.getElementById('settings-btn');
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
+
+        // 開啟設定
+        settingsBtn.onclick = () => {
+            if (isRunning) { isRunning = false; clearInterval(timerInterval); updateDisplay(); }
+            document.getElementById('setting-focus').value = Math.floor(FOCUS_TIME / 60);
+            document.getElementById('setting-break').value = Math.floor(BREAK_TIME / 60);
+            overlay.classList.add('active');
+            settingsModal.classList.add('active');
+        };
+
+        // 儲存設定
+        saveSettingsBtn.onclick = () => {
+            let f = parseInt(document.getElementById('setting-focus').value);
+            let b = parseInt(document.getElementById('setting-break').value);
+            if (!isNaN(f) && f > 0) FOCUS_TIME = f * 60;
+            if (!isNaN(b) && b > 0) BREAK_TIME = b * 60;
+            timeLeft = (currentMode === 'focus') ? FOCUS_TIME : BREAK_TIME;
+            overlay.classList.remove('active');
+            settingsModal.classList.remove('active');
+            updateDisplay();
+        };
+
+        overlay.onclick = () => {
+            overlay.classList.remove('active');
+            settingsModal.classList.remove('active');
+        };
+
+        // 音樂按鈕樣式切換
+        document.getElementById('music-btn').onclick = (e) => {
+            const i = e.currentTarget.querySelector('i');
+            i.classList.toggle('fa-music');
+            i.classList.toggle('fa-volume-mute');
+        };
+
+        updateDisplay();
             }
         }
 
@@ -219,18 +297,135 @@
                 if (Notification.permission === "default") Notification.requestPermission();
                 isRunning = true; timerInterval = setInterval(tick, 1000); 
             }
+            
+        const overlay = document.getElementById('overlay');
+        const settingsModal = document.getElementById('settings-modal');
+        const settingsBtn = document.getElementById('settings-btn');
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
+
+        // 開啟設定
+        settingsBtn.onclick = () => {
+            if (isRunning) { isRunning = false; clearInterval(timerInterval); updateDisplay(); }
+            document.getElementById('setting-focus').value = Math.floor(FOCUS_TIME / 60);
+            document.getElementById('setting-break').value = Math.floor(BREAK_TIME / 60);
+            overlay.classList.add('active');
+            settingsModal.classList.add('active');
+        };
+
+        // 儲存設定
+        saveSettingsBtn.onclick = () => {
+            let f = parseInt(document.getElementById('setting-focus').value);
+            let b = parseInt(document.getElementById('setting-break').value);
+            if (!isNaN(f) && f > 0) FOCUS_TIME = f * 60;
+            if (!isNaN(b) && b > 0) BREAK_TIME = b * 60;
+            timeLeft = (currentMode === 'focus') ? FOCUS_TIME : BREAK_TIME;
+            overlay.classList.remove('active');
+            settingsModal.classList.remove('active');
             updateDisplay();
+        };
+
+        overlay.onclick = () => {
+            overlay.classList.remove('active');
+            settingsModal.classList.remove('active');
+        };
+
+        // 音樂按鈕樣式切換
+        document.getElementById('music-btn').onclick = (e) => {
+            const i = e.currentTarget.querySelector('i');
+            i.classList.toggle('fa-music');
+            i.classList.toggle('fa-volume-mute');
+        };
+
+        updateDisplay();
         };
         
         document.getElementById('skip-btn').onclick = () => {
             currentMode = currentMode === 'focus' ? 'break' : 'focus';
             timeLeft = currentMode === 'focus' ? FOCUS_TIME : BREAK_TIME;
+            
+        const overlay = document.getElementById('overlay');
+        const settingsModal = document.getElementById('settings-modal');
+        const settingsBtn = document.getElementById('settings-btn');
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
+
+        // 開啟設定
+        settingsBtn.onclick = () => {
+            if (isRunning) { isRunning = false; clearInterval(timerInterval); updateDisplay(); }
+            document.getElementById('setting-focus').value = Math.floor(FOCUS_TIME / 60);
+            document.getElementById('setting-break').value = Math.floor(BREAK_TIME / 60);
+            overlay.classList.add('active');
+            settingsModal.classList.add('active');
+        };
+
+        // 儲存設定
+        saveSettingsBtn.onclick = () => {
+            let f = parseInt(document.getElementById('setting-focus').value);
+            let b = parseInt(document.getElementById('setting-break').value);
+            if (!isNaN(f) && f > 0) FOCUS_TIME = f * 60;
+            if (!isNaN(b) && b > 0) BREAK_TIME = b * 60;
+            timeLeft = (currentMode === 'focus') ? FOCUS_TIME : BREAK_TIME;
+            overlay.classList.remove('active');
+            settingsModal.classList.remove('active');
             updateDisplay();
+        };
+
+        overlay.onclick = () => {
+            overlay.classList.remove('active');
+            settingsModal.classList.remove('active');
+        };
+
+        // 音樂按鈕樣式切換
+        document.getElementById('music-btn').onclick = (e) => {
+            const i = e.currentTarget.querySelector('i');
+            i.classList.toggle('fa-music');
+            i.classList.toggle('fa-volume-mute');
+        };
+
+        updateDisplay();
         };
 
         // PWA Service Worker 註冊
         if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
         
+        
+        const overlay = document.getElementById('overlay');
+        const settingsModal = document.getElementById('settings-modal');
+        const settingsBtn = document.getElementById('settings-btn');
+        const saveSettingsBtn = document.getElementById('save-settings-btn');
+
+        // 開啟設定
+        settingsBtn.onclick = () => {
+            if (isRunning) { isRunning = false; clearInterval(timerInterval); updateDisplay(); }
+            document.getElementById('setting-focus').value = Math.floor(FOCUS_TIME / 60);
+            document.getElementById('setting-break').value = Math.floor(BREAK_TIME / 60);
+            overlay.classList.add('active');
+            settingsModal.classList.add('active');
+        };
+
+        // 儲存設定
+        saveSettingsBtn.onclick = () => {
+            let f = parseInt(document.getElementById('setting-focus').value);
+            let b = parseInt(document.getElementById('setting-break').value);
+            if (!isNaN(f) && f > 0) FOCUS_TIME = f * 60;
+            if (!isNaN(b) && b > 0) BREAK_TIME = b * 60;
+            timeLeft = (currentMode === 'focus') ? FOCUS_TIME : BREAK_TIME;
+            overlay.classList.remove('active');
+            settingsModal.classList.remove('active');
+            updateDisplay();
+        };
+
+        overlay.onclick = () => {
+            overlay.classList.remove('active');
+            settingsModal.classList.remove('active');
+        };
+
+        // 音樂按鈕樣式切換
+        document.getElementById('music-btn').onclick = (e) => {
+            const i = e.currentTarget.querySelector('i');
+            i.classList.toggle('fa-music');
+            i.classList.toggle('fa-volume-mute');
+        };
+
         updateDisplay();
     </script>
 </body>

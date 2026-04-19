@@ -1,4 +1,4 @@
-﻿# 📜 My_AI_Project AI 協作開發準則 (Master AI Rules v3)
+# 📜 My_AI_Project AI 協作開發準則 (Master AI Rules v3)
 
 ## 1. 核心開發規範
 - **分工架構**：Antigravity 負責維護工具（sanitizer/restorer/rfp_checker），不接觸真實資料；Claude Cowork 執行日常任務。

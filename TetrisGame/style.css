@@ -1,0 +1,255 @@
+:root {
+    --bg-color: #0f172a;
+    --glass-bg: rgba(30, 41, 59, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.5);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+/* 背景光暈 (Animated Blobs) 大幅提昇視覺質感 */
+.blob-1, .blob-2 {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: -1;
+    opacity: 0.5;
+    animation: float 10s infinite ease-in-out alternate;
+}
+
+.blob-1 {
+    top: -10%;
+    left: 20%;
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(circle, rgba(99,102,241,0.5) 0%, rgba(0,0,0,0) 70%);
+}
+
+.blob-2 {
+    bottom: -10%;
+    right: 10%;
+    width: 40vw;
+    height: 40vw;
+    background: radial-gradient(circle, rgba(236,72,153,0.5) 0%, rgba(0,0,0,0) 70%);
+    animation-delay: -5s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, -50px) scale(1.1); }
+}
+
+.game-wrapper {
+    display: flex;
+    gap: 2rem;
+    position: relative;
+    z-index: 10;
+    padding: 2.5rem;
+    border-radius: 24px;
+    background: rgba(15, 23, 42, 0.4);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+}
+
+.glass-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    backdrop-filter: blur(12px);
+}
+
+.game-board-container {
+    position: relative;
+    padding: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.8);
+}
+
+canvas {
+    display: block;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+}
+
+.stats-panel, .side-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    min-width: 200px;
+}
+
+.stat-box {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: transform 0.2s ease;
+}
+
+.stat-box:hover {
+    transform: scale(1.02);
+}
+
+.stat-box h3 {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.stat-box p {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--accent);
+    text-shadow: 0 0 15px var(--accent-glow);
+    font-variant-numeric: tabular-nums;
+}
+
+.next-piece-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.next-piece-box h3 {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.next-piece-box canvas {
+    background: transparent;
+    box-shadow: none;
+}
+
+.controls-hint {
+    margin-top: auto;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    background: rgba(0,0,0,0.3);
+    padding: 1.2rem;
+    border-radius: 12px;
+}
+
+.controls-hint h4 {
+    margin-bottom: 1rem;
+    color: var(--text-main);
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.controls-hint p {
+    margin: 0.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.controls-hint span {
+    color: var(--accent);
+    font-weight: 800;
+    font-size: 0.95rem;
+    background: rgba(255,255,255,0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+/* Overlays (遊戲結束、開始標題畫面) */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    transition: opacity 0.3s ease;
+}
+
+.overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.game-over-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #ef4444; /* 紅色強調 */
+    text-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+    margin-bottom: 1rem;
+    letter-spacing: 4px;
+}
+
+.overlay p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+#final-score {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 1.5rem;
+}
+
+/* 滑鼠與主按鈕樣式 */
+.glow-btn {
+    background: transparent;
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 0.8rem 2.5rem;
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+
+.glow-btn:hover {
+    background: var(--accent);
+    color: #0f172a;
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
+    transform: translateY(-2px);
+}
+
+.glow-btn:active {
+    transform: translateY(1px);
+}

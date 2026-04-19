@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Antigravity Tetris</title>
+    <!-- 使用現代字體，打造科技感 -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 背景動態光暈效果區塊 -->
+        <div class="blob-1"></div>
+        <div class="blob-2"></div>
+        
+        <div class="game-wrapper">
+            <!-- 左側邊欄：遊戲統計資訊與控制 -->
+            <div class="stats-panel glass-panel">
+                <div class="stat-box">
+                    <h3>等級 (LEVEL)</h3>
+                    <p id="level-display">1</p>
+                </div>
+                <div class="stat-box">
+                    <h3>分數 (SCORE)</h3>
+                    <p id="score-display">0</p>
+                </div>
+                <div class="stat-box">
+                    <h3>消除行 (LINES)</h3>
+                    <p id="lines-display">0</p>
+                </div>
+                
+                <div class="controls-hint">
+                    <h4>操作說明</h4>
+                    <p><span>← →</span> 左右移動</p>
+                    <p><span>↑ / 空白鍵</span> 瞬間落底</p>
+                    <p><span>↓</span> 加速掉落</p>
+                    <p><span>Z</span> 逆時針旋轉</p>
+                    <p><span>X</span> 順時針旋轉</p>
+                    <p><span>P / Esc</span> 暫停遊戲</p>
+                </div>
+            </div>
+
+            <!-- 中央遊戲主視窗核心 -->
+            <div class="game-board-container glass-panel">
+                <canvas id="tetris-canvas" width="300" height="600"></canvas>
+                <!-- 遊戲結束疊加層 -->
+                <div id="game-over-screen" class="overlay hidden">
+                    <h2 class="game-over-title">GAME OVER</h2>
+                    <p>最終分數: <span id="final-score">0</span></p>
+                    <button id="restart-btn" class="glow-btn">重新開始</button>
+                </div>
+                <!-- 開始畫面疊加層 -->
+                <div id="start-screen" class="overlay">
+                    <h2 class="game-over-title" style="font-size: 3rem; color: var(--accent); text-shadow: 0 0 20px var(--accent-glow);">TETRIS</h2>
+                    <button id="start-btn" class="glow-btn">開始遊戲</button>
+                </div>
+                <!-- 暫停畫面疊加層 -->
+                <div id="pause-screen" class="overlay hidden">
+                    <h2 class="game-over-title" style="color: var(--text-main); text-shadow: none;">PAUSED</h2>
+                    <p>按下 Esc 或 P 繼續</p>
+                </div>
+            </div>
+
+            <!-- 右側邊欄：下一個方塊預覽區 -->
+            <div class="side-panel glass-panel">
+                <div class="next-piece-box">
+                    <h3>下一個 (NEXT)</h3>
+                    <canvas id="next-canvas" width="120" height="120"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

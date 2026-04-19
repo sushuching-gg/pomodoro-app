@@ -1,0 +1,16 @@
+﻿{
+  "name": "Pomodoro Focus 專注番茄",
+  "short_name": "專注番茄",
+  "start_url": "pomodoro.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#f43f5e",
+  "icons": [
+    {
+      "src": "resized_transparent.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,31 +1,32 @@
-ï»¿# PROJECT_MEMORY.md
-# AI å°ˆæ¡ˆé–‹ç™¼æ ¸å¿ƒå°Žå¼• (System Instructions)
-# ç‰ˆæœ¬ï¼š2026-03-01 v3.1 (Encoding Stabilized)
+# PROJECT_MEMORY.md
+# AI ±M®×¶}µo®Ö¤ß¾É¤Þ (System Instructions)
+# ª©¥»¡G2026-03-01 v3.1 (Encoding Stabilized)
 
-## ä¸€ã€ åŸºæœ¬åŽŸå‰‡ (General Principles)
-1. åƒ…èƒ½åœ¨ AI_Dev_Workspace å…§è™•ç†åŽ»è­˜åˆ¥åŒ–å¾Œçš„è³‡æ–™ã€‚
-2. çµ•å°ç¦å€ (Forbidden Zone): /confidential/ å…§çš„æª”æ¡ˆç‚ºæœ€é«˜ç¦ä»¤ï¼ŒAntigravity ä¸å¾—å­˜å–ã€‚
-3. æœå°‹ç´…ç·š (Search Redlines): ç¦æ­¢ä½¿ç”¨æ¡ˆè™Ÿã€çœŸå¯¦äººåæˆ–æ©Ÿé—œåç¨±ç›´æŽ¥æœå°‹ã€‚
+## ¤@¡B °ò¥»­ì«h (General Principles)
+1. ¶È¯à¦b AI_Dev_Workspace ¤º³B²z¥hÃÑ§O¤Æ«áªº¸ê®Æ¡C
+2. µ´¹ï¸T°Ï (Forbidden Zone): /confidential/ ¤ºªºÀÉ®×¬°³Ì°ª¸T¥O¡AAntigravity ¤£±o¦s¨ú¡C
+3. ·j´M¬õ½u (Search Redlines): ¸T¤î¨Ï¥Î®×¸¹¡B¯u¹ê¤H¦W©Î¾÷Ãö¦WºÙª½±µ·j´M¡C
 
-## äºŒã€ å¥—ä»¶ç™½åå–® (Package Whitelist)
-- ç¦æ­¢ä½¿ç”¨ requests ç­‰å…·ç¶²è·¯ä¸Šå‚³èƒ½åŠ›ä¹‹å¥—ä»¶ã€‚
-- å‡†è¨±å¥—ä»¶ï¼špandas, openpyxl, python-docx, xlsxwriter, Python æ¨™æº–åº«ã€‚
-
-
-### Phase 13: V3 æ•´åˆå®Œç•¢èˆ‡å”ä½œæž¶æ§‹éŽ–å®š (2026-03-01)
-- **æ ¸å¿ƒå¼•æ“Žå‡ç´š**ï¼šfp_checker.py å·²å‡ç´šè‡³ V3 ç©©å®šç‰ˆï¼Œæ”¯æ´é›™æ–‡ä»¶åˆ†æžã€V3 å°ˆæ¥­ Excel ç”¢å‡ºï¼Œä¸¦ä¿®æ­£ CP950 ç·¨ç¢¼å•é¡Œã€‚
-- **åŽ»è­˜åˆ¥åŒ–å¼·åŒ–**ï¼šsanitizer_v2.1.py éƒ¨ç½²å®Œç•¢ï¼Œå…·å‚™ 114 å¹´åº¦æ¡ˆè™Ÿè­˜åˆ¥ã€è·ç¨±èªžæ„æ„Ÿæ‡‰åµæ¸¬èˆ‡å€‹è³‡æ·±åº¦æ¸…æ´—ã€‚
-- **è³‡å®‰ç‰©ç†é˜²ç·š**ï¼šsecurity_guard.py è‡ªå‹•ç›£æŽ§ PROJECT_MEMORY.md çš„å­˜åœ¨èˆ‡ç·¨ç¢¼å®Œæ•´æ€§ï¼Œæ ¹ç›®éŒ„å·²å®Œæˆæ·¨åŒ–ï¼Œæ•æ„Ÿè³‡æ–™å…¨æ•¸éš”é›¢æ–¼ confidential/ å…§ã€‚
-- **Claude Cowork å”ä½œéŽ–å®š**ï¼šå·²åœ¨ D:\ å»ºç«‹ AI_Dev_Workspace/ ä¸­è½‰ç«™ï¼ŒCOWORK_BRIEFING.md å·²è¨­ç‚ºã€Œå”¯è®€ã€ä¸¦éŽ–å®š A/B/C/D ä»»å‹™æž¶æ§‹ã€‚
-- **å³å°‡é€²è¡Œ**ï¼šLayer 3 ç¶“è²»ç´°é …æ·±åº¦å°æ¯” (Budget Cross-check)ã€‚
+## ¤G¡B ®M¥ó¥Õ¦W³æ (Package Whitelist)
+- ¸T¤î¨Ï¥Î requests µ¥¨ãºô¸ô¤W¶Ç¯à¤O¤§®M¥ó¡C
+- ­ã³\®M¥ó¡Gpandas, openpyxl, python-docx, xlsxwriter, Python ¼Ð·Ç®w¡C
 
 
+### Phase 13: V3 ¾ã¦X§¹²¦»P¨ó§@¬[ºcÂê©w (2026-03-01)
+- **®Ö¤ß¤ÞÀº¤É¯Å**¡Gfp_checker.py ¤w¤É¯Å¦Ü V3 Ã­©wª©¡A¤ä´©Âù¤å¥ó¤ÀªR¡BV3 ±M·~ Excel ²£¥X¡A¨Ã­×¥¿ CP950 ½s½X°ÝÃD¡C
+- **¥hÃÑ§O¤Æ±j¤Æ**¡Gsanitizer_v2.1.py ³¡¸p§¹²¦¡A¨ã³Æ 114 ¦~«×®×¸¹ÃÑ§O¡BÂ¾ºÙ»y·N·PÀ³°»´ú»P­Ó¸ê²`«×²M¬~¡C
+- **¸ê¦wª«²z¨¾½u**¡Gsecurity_guard.py ¦Û°ÊºÊ±± PROJECT_MEMORY.md ªº¦s¦b»P½s½X§¹¾ã©Ê¡A®Ú¥Ø¿ý¤w§¹¦¨²b¤Æ¡A±Ó·P¸ê®Æ¥þ¼Æ¹jÂ÷©ó confidential/ ¤º¡C
+- **Claude Cowork ¨ó§@Âê©w**¡G¤w¦b D:\ «Ø¥ß AI_Dev_Workspace/ ¤¤Âà¯¸¡ACOWORK_BRIEFING.md ¤w³]¬°¡u°ßÅª¡v¨ÃÂê©w A/B/C/D ¥ô°È¬[ºc¡C
+- **§Y±N¶i¦æ**¡GLayer 3 ¸g¶O²Ó¶µ²`«×¹ï¤ñ (Budget Cross-check)¡C
 
 
-### Phase 14: å…¨è‡ªå‹•æ•¸æ“šå°ç„¦èˆ‡è·¨ AI è¡Œæ”¿æµæ°´ç·šæ­£å¼æ‰“é€š (2026-03-01)
-- **æ ¸å¿ƒå¼•æ“Žå‡ç´š (V3.2.1)**ï¼šfp_checker.py å·²å…·å‚™ Layer 3+ æ·±åº¦æ•¸æ“šæ„Ÿæ‡‰ï¼Œæ”¯æ´é ç®—è¶…æ”¯åµæ¸¬èˆ‡ KPI é‡åŒ–æŒ‡æ¨™å°æ ¸ã€‚
-- **ç‰©ç†å€‰å„²æ ¡æº–**ï¼šç‚ºç¹žéŽ Claude Cowork å­˜å–é™åˆ¶ï¼Œå°ˆæ¡ˆä¸­å¿ƒå·²é·ç§»è‡³ C:\Users\user\Project_Hub\ã€‚
-- **é›™æ©Ÿå”ä½œå¯¦æ¸¬æˆåŠŸ**ï¼šAntigravity (æ•¸æ“šæå–) -> Cowork (è¡Œæ”¿ç”¢å‡º) æµæ°´ç·šå·²å®Œæˆé¦–ä»½ã€Œè¼”å°Žå‘ŠçŸ¥å‡½ã€èˆ‡ã€Œç¾ŽåŒ–å°æ¯”è¡¨ã€ç”¢å‡ºã€‚
-- **è³‡å®‰é–€éŽ–å¼·åŒ–**ï¼šCOWORK_BRIEFING.md å·²åœ¨ C ç£ç¢ŸéŽ–å®šç‚ºå”¯è®€ï¼Œåš´æ ¼è¦ç¯„äººå/æ¡ˆè™Ÿ [CITY_xxxx] ç­‰ç¬¦è™Ÿä¹‹ä¿ç•™ã€‚
-- **å³å°‡é€²è¡Œ**ï¼šLayer 4 PPT è¡Œæ”¿ç°¡å ±è‡ªå‹•ç”Ÿæˆ (ä»»å‹™ C)ã€‚
+
+
+### Phase 14: ¥þ¦Û°Ê¼Æ¾Ú¹ïµJ»P¸ó AI ¦æ¬F¬y¤ô½u¥¿¦¡¥´³q (2026-03-01)
+- **®Ö¤ß¤ÞÀº¤É¯Å (V3.2.1)**¡Gfp_checker.py ¤w¨ã³Æ Layer 3+ ²`«×¼Æ¾Ú·PÀ³¡A¤ä´©¹wºâ¶W¤ä°»´ú»P KPI ¶q¤Æ«ü¼Ð¹ï®Ö¡C
+- **ª«²z­ÜÀx®Õ·Ç**¡G¬°Â¶¹L Claude Cowork ¦s¨ú­­¨î¡A±M®×¤¤¤ß¤w¾E²¾¦Ü C:\Users\user\Project_Hub\¡C
+- **Âù¾÷¨ó§@¹ê´ú¦¨¥\**¡GAntigravity (¼Æ¾Ú´£¨ú) -> Cowork (¦æ¬F²£¥X) ¬y¤ô½u¤w§¹¦¨­º¥÷¡u»²¾É§iª¾¨ç¡v»P¡u¬ü¤Æ¹ï¤ñªí¡v²£¥X¡C
+- **¸ê¦wªùÂê±j¤Æ**¡GCOWORK_BRIEFING.md ¤w¦b C ºÏºÐÂê©w¬°°ßÅª¡AÄY®æ³W½d¤H¦W/®×¸¹ [CITY_xxxx] µ¥²Å¸¹¤§«O¯d¡C
+- **§Y±N¶i¦æ**¡GLayer 4 PPT ¦æ¬FÂ²³ø¦Û°Ê¥Í¦¨ (¥ô°È C)¡C
+
 

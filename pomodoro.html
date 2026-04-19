@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <title>Pomodoro Focus - 專注時光</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* 顏色變數 */
+            --bg-color: #0f172a;      
+            --card-bg: rgba(30, 41, 59, 0.7); 
+            --text-primary: #f8fafc;  
+            --text-secondary: #94a3b8; 
+            
+            --focus-color: #f43f5e;   /* 專注紅 */
+            --focus-glow: rgba(244, 63, 94, 0.5);
+            --break-color: #10b981;   /* 休息綠 */
+            --break-glow: rgba(16, 185, 129, 0.5);
+            
+            --transition-speed: 0.5s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            transition: background-color var(--transition-speed) ease;
+        }
+
+        /* 迷人的背景光暈特效 */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            width: 50vw;
+            height: 50vw;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.15;
+            transition: background var(--transition-speed) ease, opacity var(--transition-speed) ease;
+        }
+
+        body::before {
+            top: -20vh;
+            left: -10vw;
+            background: var(--focus-color);
+        }
+        
+        body::after {
+            bottom: -20vh;
+            right: -10vw;
+            background: #3b82f6; 
+            opacity: 0.08;
+        }
+
+        body.mode-break::before {
+            background: var(--break-color);
+        }
+
+        /* 倒數 5 秒閃光特效 */
+        body.flash-screen {
+            background-color: rgba(244, 63, 94, 0.8) !important;
+            transition: background-color 0.1s ease !important;
+        }
+        body.mode-break.flash-screen {
+            background-color: rgba(16, 185, 129, 0.8) !important;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 420px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.4rem;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease, background 0.3s ease;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+        }
+
+        .icon-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.08);
+            transform: scale(1.05);
+        }
+
+        .timer-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .progress-ring-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-track {
+            stroke: rgba(255, 255, 255, 0.05);
+        }
+
+        .progress-ring-fill {
+            stroke: var(--focus-color);
+            transition: stroke-dashoffset 1s linear, stroke var(--transition-speed) ease;
+            filter: drop-shadow(0 0 10px var(--focus-glow));
+        }
+
+        body.mode-break .progress-ring-fill {
+            stroke: var(--break-color);
+            filter: drop-shadow(0 0 10px var(--break-glow));
+        }
+
+        .tomato-character-wrapper {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: float 4s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) scale(1.02); }
+            50% { transform: translateY(-6px) scale(0.98); }
+            100% { transform: translateY(0px) scale(1.02); }
+        }
+
+        .t-body {
+            transition: fill var(--transition-speed) ease;
+        }
+
+        body.mode-break .t-body {
+            fill: var(--break-color);
+        }
+
+        body.mode-break .t-face .eye {
+            transform: scaleY(0.15);
+            transition: transform 0.4s ease;
+        }
+
+        .timer-display {
+            position: absolute;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .timer-display-bottom {
+            margin-top: -1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .time {
+            font-size: 3.8rem;
+            font-weight: 600;
+            letter-spacing: -2px;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-primary);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .status {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            transition: color var(--transition-speed) ease;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 1.5rem;
+        }
+
+        .btn {
+            padding: 1.1rem 2.5rem;
+            border-radius: 999px;
+            border: none;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .btn-primary {
+            background: var(--focus-color);
+            color: #fff;
+            box-shadow: 0 8px 20px -6px var(--focus-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px -6px var(--focus-glow);
+            filter: brightness(1.1);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+
+        body.mode-break .btn-primary {
+            background: var(--break-color);
+            box-shadow: 0 8px 20px -6px var(--break-glow);
+        }
+
+        body.mode-break .btn-primary:hover {
+            box-shadow: 0 12px 25px -6px var(--break-glow);
+        }
+
+        .secondary-controls {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255,255,255,0.05);
+            width: 54px;
+            height: 54px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-radius: 50%;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* 彈出視窗設計 */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            z-index: 50;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -45%) scale(0.95);
+            background: var(--card-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            padding: 2.5rem 2rem;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 360px;
+            z-index: 60;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7);
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .setting-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .setting-group:last-of-type {
+            border-bottom: none;
+        }
+
+        .setting-group label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .setting-group input {
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 8px;
+            width: 70px;
+            text-align: center;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border 0.3s ease;
+        }
+        
+        .setting-group input:focus {
+            outline: none;
+            border-color: var(--focus-color);
+        }
+        
+        .modal .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-primary);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .modal .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="top-bar">
+            <!-- 音樂控制圖示 -->
+            <button class="icon-btn" id="music-btn" title="背景音樂"><i class="fas fa-music"></i></button>
+            <!-- 設定圖示 -->
+            <button class="icon-btn" id="settings-btn" title="設定"><i class="fas fa-cog"></i></button>
+        </header>
+
+        <main class="timer-section">
+            <div class="progress-ring-container">
+                <svg class="progress-ring" width="280" height="280" viewBox="0 0 280 280" style="position: absolute; z-index: 1;">
+                    <circle class="progress-ring-track" stroke-width="8" fill="transparent" r="130" cx="140" cy="140"/>
+                    <circle class="progress-ring-fill" id="progress-ring" stroke-width="8" fill="transparent" r="130" cx="140" cy="140" stroke-linecap="round"/>
+                </svg>
+                <div class="tomato-character-wrapper">
+                    <svg class="tomato-svg" viewBox="0 0 100 100" width="160" height="160">
+                        <path class="t-body" d="M50 90 C10 90 0 50 15 25 C25 10 40 10 50 15 C60 10 75 10 85 25 C100 50 90 90 50 90 Z" fill="var(--focus-color)"/>
+                        <path d="M25 35 Q20 50 30 65" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="4" stroke-linecap="round"/>
+                        <path class="t-leaf" d="M50 15 C40 0 20 0 15 10 C30 15 40 15 50 20 Z" fill="#4ade80"/>
+                        <path class="t-leaf" d="M50 15 C60 0 80 0 85 10 C70 15 60 15 50 20 Z" fill="#22c55e"/>
+                        <path d="M50 15 Q50 5 45 0" fill="none" stroke="#16a34a" stroke-width="4" stroke-linecap="round"/>
+                        <g class="t-face">
+                            <circle class="eye" cx="35" cy="53" r="5" fill="#0f172a" style="transform-origin: 35px 53px;"/>
+                            <circle class="eye" cx="65" cy="53" r="5" fill="#0f172a" style="transform-origin: 65px 53px;"/>
+                            <path d="M47 62 Q50 66 53 62" fill="none" stroke="#0f172a" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="27" cy="58" r="4" fill="rgba(255,180,180,0.6)"/>
+                            <circle cx="73" cy="58" r="4" fill="rgba(255,180,180,0.6)"/>
+                            <circle cx="33" cy="51" r="1.5" fill="#fff"/>
+                            <circle cx="63" cy="51" r="1.5" fill="#fff"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="timer-display-bottom">
+                <div class="time" id="time-display">15:00</div>
+                <div class="status" id="status-display">等待開始</div>
+            </div>
+            </div>
+
+            <div class="controls">
+                <!-- 開始/暫停按鈕 -->
+                <button class="btn btn-primary" id="main-btn">
+                    <i class="fas fa-play"></i> 開始專注 (Start Focus)
+                </button>
+                
+                <div class="secondary-controls">
+                    <!-- 跳過按鈕 -->
+                    <button class="icon-btn control-btn" id="skip-btn" title="跳過 (Skip)"><i class="fas fa-forward-step"></i></button>
+                    <!-- 結束循環按鈕 -->
+                    <button class="icon-btn control-btn" id="end-btn" title="結束循環 (End Session)"><i class="fas fa-stop"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 彈出視窗遮罩 -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- 設定視窗 -->
+    <div class="modal" id="settings-modal">
+        <h3>時間設定</h3>
+        <p>自訂您的專注與休息節奏</p>
+        <div class="setting-group">
+            <label>專注時間 (分鐘)</label>
+            <input type="number" id="setting-focus" value="15" min="1" max="120">
+        </div>
+        <div class="setting-group">
+            <label>休息時間 (分鐘)</label>
+            <input type="number" id="setting-break" value="5" min="1" max="60">
+        </div>
+        <button class="btn btn-secondary" id="save-settings-btn">儲存設定</button>
+    </div>
+
+    <!-- 提示視窗 -->
+    <div class="modal" id="alert-modal">
+        <h3 id="alert-title">提示標題</h3>
+        <p id="alert-message">提示訊息內容。</p>
+        <button class="btn btn-primary" id="alert-action-btn">確認</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // == 核心狀態設定 ==
+            let FOCUS_TIME = 15 * 60; // 預設專注時間 (秒)
+            let BREAK_TIME = 5 * 60;  // 預設休息時間 (秒)
+            let currentMode = 'idle'; // idle | focus | break
+            let timeLeft = FOCUS_TIME;
+            let isRunning = false;
+            let timerInterval = null;
+
+            // == 綁定 DOM 元素 ==
+            const circle = document.getElementById('progress-ring');
+            const timeDisplay = document.getElementById('time-display');
+            const statusDisplay = document.getElementById('status-display');
+            const mainBtn = document.getElementById('main-btn');
+            const skipBtn = document.getElementById('skip-btn');
+            const endBtn = document.getElementById('end-btn');
+            
+            const overlay = document.getElementById('overlay');
+            const settingsModal = document.getElementById('settings-modal');
+            const alertModal = document.getElementById('alert-modal');
+            const settingsBtn = document.getElementById('settings-btn');
+            const saveSettingsBtn = document.getElementById('save-settings-btn');
+            const musicBtn = document.getElementById('music-btn');
+
+            const alertTitle = document.getElementById('alert-title');
+            const alertMessage = document.getElementById('alert-message');
+            const alertActionBtn = document.getElementById('alert-action-btn');
+
+            // == SVG 進度條初始化 ==
+            const radius = circle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            circle.style.strokeDashoffset = 0;
+
+            // 時間格式化 (MM:SS)
+            function formatTime(seconds) {
+                const m = Math.floor(seconds / 60);
+                const s = seconds % 60;
+                return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+            }
+
+            // 更新進度條
+            function setProgress(percent) {
+                const offset = circumference - (percent * circumference);
+                circle.style.strokeDashoffset = offset;
+            }
+
+            // == 畫面更新核心 ==
+            function updateDisplay() {
+                timeDisplay.textContent = formatTime(timeLeft);
+                
+                let totalTime = (currentMode === 'break') ? BREAK_TIME : FOCUS_TIME;
+                let percent = timeLeft / totalTime;
+                
+                if(currentMode === 'idle') percent = 1;
+
+                setProgress(percent);
+
+                if (currentMode === 'focus') {
+                    statusDisplay.textContent = '專注時間 (Focus Time)';
+                    document.body.classList.remove('mode-break');
+                } else if (currentMode === 'break') {
+                    statusDisplay.textContent = '休息時間 (Break Time)';
+                    document.body.classList.add('mode-break');
+                } else {
+                    statusDisplay.textContent = '等待開始';
+                    document.body.classList.remove('mode-break');
+                }
+
+                if (!isRunning) {
+                    if (currentMode === 'idle' || timeLeft === FOCUS_TIME) {
+                        mainBtn.innerHTML = '<i class="fas fa-play"></i> 開始專注 (Start Focus)';
+                    } else if (currentMode === 'break' && timeLeft === BREAK_TIME) {
+                        mainBtn.innerHTML = '<i class="fas fa-play"></i> 開始休息 (Start Break)';
+                    } else {
+                        mainBtn.innerHTML = '<i class="fas fa-play"></i> 繼續 (Resume)';
+                    }
+                } else {
+                    mainBtn.innerHTML = '<i class="fas fa-pause"></i> 暫停 (Pause)';
+                }
+            }
+
+            // == Web Audio API 提示音效 ==
+            let audioCtx = null;
+            function playBeep() {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(880, audioCtx.currentTime); // 880Hz
+                
+                gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.5, audioCtx.currentTime + 0.05);
+                gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.2);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.25);
+            }
+
+            // 發送系統級通知
+            function sendSystemNotification(title, message) {
+                if ("Notification" in window && Notification.permission === "granted") {
+                    new Notification(title, {
+                        body: message,
+                        icon: 'tomato.ico',
+                        requireInteraction: true
+                    });
+                }
+            }
+
+                        // == 視窗標題閃動提醒 ==
+            let titleInterval = null;
+            function startTitleAlert(msg) {
+                const originalTitle = document.title;
+                let isAlert = false;
+                if (titleInterval) clearInterval(titleInterval);
+                titleInterval = setInterval(() => {
+                    document.title = isAlert ? msg : originalTitle;
+                    isAlert = !isAlert;
+                }, 800);
+            }
+
+            function stopTitleAlert() {
+                if (titleInterval) {
+                    clearInterval(titleInterval);
+                    titleInterval = null;
+                    document.title = "Pomodoro Focus - 專注時光";
+                }
+            }
+
+            // == 控制邏輯 ==
+            function tick() {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    
+                    // 最後 5 秒觸發閃燈與音效
+                    if (timeLeft <= 5 && timeLeft > 0) {
+                        playBeep();
+                        document.body.classList.add('flash-screen');
+                        setTimeout(() => document.body.classList.remove('flash-screen'), 150);
+                    }
+                    
+                    updateDisplay();
+        // 註冊 Service Worker (PWA 核心)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Error', err));
+            });
+        }
+
+                } else {
+                    handlePhaseEnd();
+                }
+            }
+
+            function startTimer() {
+                if (!isRunning) {
+                    if ("Notification" in window && Notification.permission === "default") {
+                        Notification.requestPermission();
+                    }
+                    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+                    if (currentMode === 'idle') currentMode = 'focus';
+                    isRunning = true;
+                    timerInterval = setInterval(tick, 1000);
+                    updateDisplay();
+        // 註冊 Service Worker (PWA 核心)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Error', err));
+            });
+        }
+
+                }
+            }
+
+            function pauseTimer() {
+                isRunning = false;
+                clearInterval(timerInterval);
+                updateDisplay();
+        // 註冊 Service Worker (PWA 核心)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Error', err));
+            });
+        }
+
+            }
+
+            // 當前階段倒數結束時處理
+            function handlePhaseEnd() {
+                pauseTimer();
+                
+                if (currentMode === 'focus') {
+                    // 專注結束 -> 進入休息
+                    currentMode = 'break';
+                    timeLeft = BREAK_TIME;
+                    updateDisplay();
+        // 註冊 Service Worker (PWA 核心)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Error', err));
+            });
+        }
+
+                    
+                    showAlert(
+                        '休息時間到！',
+                        `你已經專注了 ${(FOCUS_TIME/60).toFixed(0)} 分鐘，起來走走，享受這段休息時光吧！`,
+                        '好的',
+                        () => {} // 點擊確認後直接關閉
+                    );
+                    
+                    // 自動開始下一階段
+                    startTimer();
+
+                } else if (currentMode === 'break') {
+                    // 休息結束 -> 等待專注
+                    currentMode = 'idle';
+                    timeLeft = FOCUS_TIME;
+                    updateDisplay();
+        // 註冊 Service Worker (PWA 核心)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Error', err));
+            });
+        }
+
+                    
+                    const msg = '休息結束！讓大腦回到清晰完美的狀態吧。';
+                    startTitleAlert("🍅 準備專注！");
+                    sendSystemNotification('準備開始下一個專注循環？', msg);
+                    showAlert('準備開始下一個專注循環？', msg, '下一個循環 (Next Cycle)', () => {
+                        stopTitleAlert();
+                        currentMode = 'focus';
+                        startTimer();
+                    });
+                }
+            }
+
+            // 手動跳過當前階段
+            function skipPhase() {
+                if (currentMode === 'idle' || currentMode === 'focus') {
+                    currentMode = 'break';
+                    timeLeft = BREAK_TIME;
+                } else if (currentMode === 'break') {
+                    currentMode = 'idle';
+                    timeLeft = FOCUS_TIME;
+                }
+                pauseTimer();
+                updateDisplay();
+        // 註冊 Service Worker (PWA 核心)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Error', err));
+            });
+        }
+
+            }
+
+            // 結束所有循環
+            function endSession() {
+                pauseTimer();
+                currentMode = 'idle';
+                timeLeft = FOCUS_TIME;
+                updateDisplay();
+        // 註冊 Service Worker (PWA 核心)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Error', err));
+            });
+        }
+
+            }
+
+            // == Modal 控制邏輯 ==
+            let alertCallback = null;
+
+            function showAlert(title, message, btnText, callback) {
+                alertTitle.textContent = title;
+                alertMessage.textContent = message;
+                alertActionBtn.textContent = btnText;
+                alertCallback = callback;
+                
+                overlay.classList.add('active');
+                alertModal.classList.add('active');
+            }
+
+            function closeModals() {
+                overlay.classList.remove('active');
+                settingsModal.classList.remove('active');
+                alertModal.classList.remove('active');
+            }
+
+            // == 綁定事件 ==
+            mainBtn.addEventListener('click', () => {
+                if (isRunning) pauseTimer();
+                else startTimer();
+            });
+
+            skipBtn.addEventListener('click', skipPhase);
+            endBtn.addEventListener('click', endSession);
+
+            overlay.addEventListener('click', closeModals);
+            
+            alertActionBtn.addEventListener('click', () => {
+                closeModals();
+                if (alertCallback) alertCallback();
+            });
+
+            settingsBtn.addEventListener('click', () => {
+                pauseTimer();
+                document.getElementById('setting-focus').value = Math.floor(FOCUS_TIME / 60);
+                document.getElementById('setting-break').value = Math.floor(BREAK_TIME / 60);
+                overlay.classList.add('active');
+                settingsModal.classList.add('active');
+            });
+
+            saveSettingsBtn.addEventListener('click', () => {
+                let newF = parseInt(document.getElementById('setting-focus').value);
+                let newB = parseInt(document.getElementById('setting-break').value);
+                
+                if (!isNaN(newF) && newF > 0) FOCUS_TIME = newF * 60;
+                if (!isNaN(newB) && newB > 0) BREAK_TIME = newB * 60;
+                
+                // 如果是待機或暫停，就套用新時間
+                if (!isRunning) {
+                    if (currentMode === 'break') timeLeft = BREAK_TIME;
+                    else timeLeft = FOCUS_TIME;
+                }
+                
+                closeModals();
+                updateDisplay();
+        // 註冊 Service Worker (PWA 核心)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Error', err));
+            });
+        }
+
+            });
+
+            // 音效切換(僅狀態展示)
+            musicBtn.addEventListener('click', (e) => {
+                const i = e.currentTarget.querySelector('i');
+                if (i.classList.contains('fa-music')) {
+                    i.classList.remove('fa-music');
+                    i.classList.add('fa-volume-mute');
+                    e.currentTarget.style.color = 'var(--text-secondary)';
+                } else {
+                    i.classList.remove('fa-volume-mute');
+                    i.classList.add('fa-music');
+                    e.currentTarget.style.color = 'var(--text-primary)';
+                }
+            });
+
+            // 初始化
+            updateDisplay();
+        // 註冊 Service Worker (PWA 核心)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW Registered'))
+                    .catch(err => console.log('SW Error', err));
+            });
+        }
+
+        });
+    </script>
+</body>
+</html>

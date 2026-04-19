@@ -85,16 +85,32 @@
             if (oscNode) { try{oscNode.stop();}catch(e){} oscNode = null; }
         }
 
+        
         function startAmbient() {
-            initAudio(); if (noiseNode || oscNode) return;
+            initAudio(); 
+            if (noiseNode && mode === 'focus') return;
+            if (oscNode && mode === 'break') return;
+            stopAmbient();
+            const now = audioCtx.currentTime;
             if (mode === 'focus') {
                 const bufferSize = 2 * audioCtx.sampleRate, buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate), data = buffer.getChannelData(0);
                 for (let i=0; i<bufferSize; i++) data[i] = Math.random() * 2 - 1;
                 noiseNode = audioCtx.createBufferSource(); noiseNode.buffer = buffer; noiseNode.loop = true;
-                const gain = audioCtx.createGain(); gain.gain.value = 0.08;
+                const gain = audioCtx.createGain(); gain.gain.value = 0.15; // 再次提高音量
                 noiseNode.connect(gain); gain.connect(audioCtx.destination);
                 noiseNode.start();
             } else {
+                oscNode = audioCtx.createOscillator(); oscNode.type = 'sine'; oscNode.frequency.value = 330;
+                const gain = audioCtx.createGain();
+                const lfo = audioCtx.createOscillator(); lfo.type = 'sine'; lfo.frequency.value = 0.2;
+                const lg = audioCtx.createGain(); lg.gain.value = 0.05;
+                lfo.connect(lg); lg.connect(gain.gain);
+                gain.gain.setValueAtTime(0.08, now);
+                oscNode.connect(gain); gain.connect(audioCtx.destination);
+                lfo.start(); oscNode.start();
+            }
+        }
+ else {
                 oscNode = audioCtx.createOscillator(); oscNode.type = 'sine'; oscNode.frequency.value = 330;
                 const gain = audioCtx.createGain(); gain.gain.value = 0.05;
                 oscNode.connect(gain); gain.connect(audioCtx.destination);
@@ -111,7 +127,7 @@
             ring.style.strokeDashoffset = circ - (timeLeft / ( (mode==='focus'?FOCUS_M:BREAK_m)*60 ) * circ);
             document.getElementById('main-btn').innerText = isRunning ? '暫停 (PAUSE)' : '開始 (START)';
             document.getElementById('music-btn').classList.toggle('active', musicOn);
-            if (musicOn && isRunning) startAmbient(); else stopAmbient();
+            if (musicOn) startAmbient(); else stopAmbient();
         }
 
         function tick() {

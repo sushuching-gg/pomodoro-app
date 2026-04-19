@@ -99,19 +99,42 @@
         }
 
         // 音頻引擎
-        let audioCtx = null, noiseNode = null, oscNode = null;
-        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+        
+        // 增強型音頻引擎
+        let audioCtx = null, noiseNode = null, oscNode = null, lfoNode = null;
+        function initAudio() { 
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
         
         function startAmbient() {
-            initAudio(); if (noiseNode || oscNode) return;
-            if (mode === 'focus') { // 白噪音
+            initAudio(); 
+            if (noiseNode || oscNode) return;
+            const now = audioCtx.currentTime;
+
+            if (mode === 'focus') { 
+                // 專注：下雨般的過濾白噪音
                 const bufferSize = 2 * audioCtx.sampleRate, buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate), data = buffer.getChannelData(0);
                 for (let i=0; i<bufferSize; i++) data[i] = Math.random() * 2 - 1;
                 noiseNode = audioCtx.createBufferSource(); noiseNode.buffer = buffer; noiseNode.loop = true;
-                const gain = audioCtx.createGain(); gain.gain.value = 0.02;
-                noiseNode.connect(gain); gain.connect(audioCtx.destination);
+                const filter = audioCtx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 1000;
+                const gain = audioCtx.createGain(); gain.gain.value = 0.05;
+                noiseNode.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
                 noiseNode.start();
-            } else { // 休息空靈音樂
+            } else { 
+                // 休息：呼吸般的空靈正弦波
+                oscNode = audioCtx.createOscillator(); oscNode.type = 'sine'; oscNode.frequency.value = 330;
+                const gain = audioCtx.createGain();
+                // 模擬呼吸感 (LFO)
+                lfoNode = audioCtx.createOscillator(); lfoNode.type = 'sine'; lfoNode.frequency.value = 0.2; // 5秒一個循環
+                const lfoGain = audioCtx.createGain(); lfoGain.gain.value = 0.02;
+                lfoNode.connect(lfoGain); lfoGain.connect(gain.gain);
+                gain.gain.setValueAtTime(0.03, now);
+                oscNode.connect(gain); gain.connect(audioCtx.destination);
+                lfoNode.start(); oscNode.start();
+            }
+        }
+ else { // 休息空靈音樂
                 oscNode = audioCtx.createOscillator(); oscNode.type = 'sine'; oscNode.frequency.value = 440;
                 const gain = audioCtx.createGain(); gain.gain.setValueAtTime(0, audioCtx.currentTime);
                 gain.gain.linearRampToValueAtTime(0.05, audioCtx.currentTime + 2);

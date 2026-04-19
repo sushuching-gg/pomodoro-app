@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pomodoro-v6'; // 升級到 v4 強制更新
+const CACHE_NAME = 'pomodoro-v7'; // 升級到 v4 強制更新
 const ASSETS = [ './index.html', './manifest.json', './resized_transparent.png' ];
 
 self.addEventListener('install', (e) => {

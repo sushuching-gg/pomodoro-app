@@ -1,7 +1,8 @@
 ﻿{
   "name": "Pomodoro Focus 專注番茄",
   "short_name": "專注番茄",
-  "start_url": "pomodoro.html",
+  "description": "具備強力全螢幕閃光與音效提醒的專注計時器，助你保持高效工作。",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#f43f5e",
